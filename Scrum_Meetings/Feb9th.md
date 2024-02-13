@@ -6,3 +6,5 @@ Difficulties Encountered: N/A
 ### Ayush:
 
 ### Shangeeth:
+Yesterday: Researched more debate topics and edited some user stories 
+Today: finished editing User stories and acceptance criteria
