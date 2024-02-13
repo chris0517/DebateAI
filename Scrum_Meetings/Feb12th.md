@@ -7,4 +7,7 @@ Difficulties Encountered: Finding the correct versions to work with on local mac
 Yesterday: Researched different ways to get OpenAI Credits for free\
 Today: Applying to Microsoft 2500 of free credits\
 Difficulties Encountered: Make sure I have enough credits to do the project
-### Shangeeth:
+### Shangeeth: 
+Yesterday: Researching extra functionalities to add to the project for users
+Today: Setting up the environment for the project
+Difficulties: Getting cypress and project running
