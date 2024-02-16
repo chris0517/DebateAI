@@ -2,6 +2,11 @@ import * as React from 'react';
 import {Box, Grid } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Landing from '../Landing';
+import LogIn from '../LogIn';
+import Classroom from '../Classroom';
+
+
+
 
 
 const App = () => {
@@ -17,11 +22,13 @@ const App = () => {
               <div>
                 <Routes>
                 <Route path="/" element={<Landing />} />
-                {/* <Route path="/Search" element={<Search />} /> */}
+                <Route path="/login" element={<LogIn />} />
+                <Route path="/classroom" element={<Classroom />} />
+
                 </Routes>
               </div>
             </Router>
-
+            
 
 
           </Box>

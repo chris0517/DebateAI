@@ -30,9 +30,34 @@ export default function NavBar() {
                   <Typography variant="h6"color="Black">
                       Landing
                   </Typography>
-              </Link>
+            </Link>
           </Button>
 
+
+          <Button color="inherit">
+            <Link
+                  color="inherit"
+                  style={{ textDecoration: 'inherit', cursor: "pointer", textTransform: 'none' }}
+                  onClick={() => navigate('/Classroom')}
+              >
+                  <Typography variant="h6"color="Black">
+                      Classroom
+                  </Typography>
+            </Link>
+          </Button>
+
+          <Button color="inherit">
+            <Link
+                  color="inherit"
+                  style={{ textDecoration: 'inherit', cursor: "pointer", textTransform: 'none' }}
+                  onClick={() => navigate('/login')}
+              >
+                  <Typography variant="h6"color="Black">
+                      Log in
+                  </Typography>
+            </Link>
+          </Button>
+          
         </Toolbar>
       </AppBar>
     </Box>
