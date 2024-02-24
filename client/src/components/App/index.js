@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Landing from '../Landing';
 import LogIn from '../LogIn';
 import Classroom from '../Classroom';
+import SignUp from '../SignUp';
 import Chat from '../Chat';
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/login" element={<LogIn />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="/classroom" element={<Classroom />} />
               <Route path="/chat" element={<Chat />} />
             </Routes>
