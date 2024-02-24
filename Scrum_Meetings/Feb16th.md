@@ -11,3 +11,9 @@ Difficulties Encountered: N/A
 Yesterday: Applied to Open AI credits
 Today: Start mapping out database releated ticket
 Difficultes Encountered: N/A
+
+### Shangeeth:
+
+Yesterday: Editing Jest and Cypress Configuration
+Today: Help refine the landing page
+Difficulties: N/A

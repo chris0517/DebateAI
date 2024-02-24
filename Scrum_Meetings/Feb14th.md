@@ -11,3 +11,9 @@ Difficulties Encountered: How to add icons as jpg to the sql database, or if the
 Yesterday: Worked on lab 5, going through cypress and unit testing examples
 Today: apply to open ai credits
 Difficults Encountered: none
+
+### Shangeeth:
+
+Yesterday: Helped with Jest and cypress
+Today: Tried setting up SQL Database to server
+Difficulties: Could not log into database on SQL
