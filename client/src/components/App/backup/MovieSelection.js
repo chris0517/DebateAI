@@ -1,13 +1,12 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import {FormControl, InputLabel, Select, MenuItem} from '@mui/material';
 
-function MovieSelection({ movies, selectedMovie, handleMovieChange }) {
-
-  const handleMovieSelect = (event) => {
+function MovieSelection({movies, selectedMovie, handleMovieChange}) {
+  const handleMovieSelect = event => {
     const selectedMovieId = event.target.value;
-    const selectedMovie = movies.find((movie) => movie.id === selectedMovieId);
+    const selectedMovie = movies.find(movie => movie.id === selectedMovieId);
     handleMovieChange(selectedMovie);
-  }
+  };
 
   return (
     <FormControl fullWidth>
