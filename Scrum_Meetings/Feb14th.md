@@ -13,6 +13,7 @@ Today: apply to open ai credits
 Difficults Encountered: none
 
 ### Shangeeth:
+
 Yesterday: Helped with Jest and cypress
 Today: Tried setting up SQL Database to server
 Difficulties: Could not log into database on SQL
