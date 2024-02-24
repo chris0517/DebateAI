@@ -33,6 +33,22 @@ app.post("/api/getMovies", (req, res) => {
   connection.end();
 });
 
+// API to read topics from the database
+app.post("/api/getTopics", (req, res) => {
+  let connection = mysql.createConnection(config);
+
+  const sql = `SELECT id, name, year, quality FROM movies`;
+
+  connection.query(sql, (error, results, fields) => {
+    if (error) {
+      return console.error(error.message);
+    }
+    let string = JSON.stringify(results);
+    res.send({ express: string });
+  });
+  connection.end();
+});
+
 // API to add a review to the database
 app.post("/api/addReview", (req, res) => {
   const { userID, movieID, reviewTitle, reviewContent, reviewScore } = req.body;
