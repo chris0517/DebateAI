@@ -37,7 +37,7 @@ app.post("/api/getMovies", (req, res) => {
 app.post("/api/getTopics", (req, res) => {
   let connection = mysql.createConnection(config);
 
-  const sql = `SELECT id, name, year, quality FROM movies`;
+  const sql = `SELECT * FROM movies`;
 
   connection.query(sql, (error, results, fields) => {
     if (error) {
