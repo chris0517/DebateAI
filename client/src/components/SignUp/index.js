@@ -4,47 +4,47 @@ import NavBar from '../Navigation';
 
 const serverURL = "";
 const theme = createTheme({
-    components: {
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: '#ccc', // lighter color for outline
-                },
-                '&:hover fieldset': {
-                  borderColor: '#aaa', // lighter color on hover
-                },
-              },
-              '& .MuiOutlinedInput-input': {
-                color: '#fff', // lighter text color
-              },
-              '& .MuiInputLabel-root': {
-                color: '#fff', // lighter label color
-            },
-          },
-        },
-      },
-      MuiSelect: {
-        styleOverrides: {
-          root: {
-            color: "white",
-            '.MuiOutlinedInput-notchedOutline': {
-              borderColor: '#FFFFFF',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#FFFFFF',
-            },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#FFFFFF',
-            },
-            '.MuiSvgIcon-root ': {
-              fill: "white !important",
-            }
-          },
-        },
-      },
-    },
+    // components: {
+    //   MuiTextField: {
+    //     styleOverrides: {
+    //       root: {
+    //         '& .MuiOutlinedInput-root': {
+    //             '& fieldset': {
+    //               borderColor: '#ccc', // lighter color for outline
+    //             },
+    //             '&:hover fieldset': {
+    //               borderColor: '#aaa', // lighter color on hover
+    //             },
+    //           },
+    //           '& .MuiOutlinedInput-input': {
+    //             color: '#fff', // lighter text color
+    //           },
+    //           '& .MuiInputLabel-root': {
+    //             color: '#fff', // lighter label color
+    //         },
+    //       },
+    //     },
+    //   },
+    //   MuiSelect: {
+    //     styleOverrides: {
+    //       root: {
+    //         color: "white",
+    //         '.MuiOutlinedInput-notchedOutline': {
+    //           borderColor: '#FFFFFF',
+    //         },
+    //         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    //           borderColor: '#FFFFFF',
+    //         },
+    //         '&:hover .MuiOutlinedInput-notchedOutline': {
+    //           borderColor: '#FFFFFF',
+    //         },
+    //         '.MuiSvgIcon-root ': {
+    //           fill: "white !important",
+    //         }
+    //       },
+    //     },
+    //   },
+    // },
   });
 
   
@@ -77,7 +77,7 @@ const theme = createTheme({
         <NavBar/>
         <Container maxWidth="xs">
           <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Typography component="h1" variant="h5" color='#FFFFFF'>
+            <Typography component="h1" variant="h5" color='#000'>
               Sign Up
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>

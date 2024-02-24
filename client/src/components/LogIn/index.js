@@ -24,7 +24,7 @@ const LogIn = () => {
       <NavBar />
        <Container maxWidth="xs">
         <Box sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography margin="normal" component="h1" variant="h5" color='#FFFFFF'>
+          <Typography margin="normal" component="h1" variant="h5" color='#000'>
             Sign in
           </Typography>
 
