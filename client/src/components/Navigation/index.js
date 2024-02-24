@@ -28,7 +28,7 @@ export default function NavBar() {
                   onClick={() => navigate('/')}
               >
                   <Typography variant="h6"color="Black">
-                      Landing
+                      Topics
                   </Typography>
             </Link>
           </Button>
@@ -54,6 +54,18 @@ export default function NavBar() {
               >
                   <Typography variant="h6"color="Black">
                       Log in
+                  </Typography>
+            </Link>
+          </Button>
+
+          <Button color="inherit">
+            <Link
+                  color="inherit"
+                  style={{ textDecoration: 'inherit', cursor: "pointer", textTransform: 'none' }}
+                  onClick={() => navigate('/signup')}
+              >
+                  <Typography variant="h6"color="Black">
+                      Sign Up
                   </Typography>
             </Link>
           </Button>
