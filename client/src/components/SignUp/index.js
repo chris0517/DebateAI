@@ -34,14 +34,10 @@ const SignUp = () => {
     console.log('Submitting:', userData);
 
     const userInfo = {
-      // name: `${userData.given_name} ${userData.family_name}`,
-      // email: userData.email,
-      // role: role,
-      // studentNum: studentNum
-      name: "test",
-      email: "test@gmail.com",
-      role: "student",
-      studentNum: "20935366"
+      name: `${userData.given_name} ${userData.family_name}`,
+      email: userData.email,
+      role: role,
+      studentNum: studentNum
 
     };
 

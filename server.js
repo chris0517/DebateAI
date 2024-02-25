@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import response from "express";
 import OpenAI from "./api/openai.js";
 import Topics from "./db/topics.js";
-import SignUp from ",/api/signup.js"
+import SignUp from "./api/signup.js"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
