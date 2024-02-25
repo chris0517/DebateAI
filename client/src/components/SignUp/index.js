@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import NavBar from '../Navigation';
 import { jwtDecode } from "jwt-decode";
 
@@ -8,6 +8,7 @@ import { TextField, Button, Container, Typography, Box, createTheme, ThemeProvid
 const SignUp = () => {
   const [userData, setUserData] = useState([]);
   const [role, setRole] = useState("");
+  const [studentNum, setStudentNum] = useState(null);
   const [display, setDisplay] = useState(false);
 
 
@@ -16,8 +17,9 @@ const SignUp = () => {
     setUserData(userInfo);
     console.log(userData.given_name);
   };
+
   const handleStudnetNumberChange = (e) => {
-    
+    setStudentNum(e.target.value);
   };
 
   const handleChange = (e) => {
@@ -38,7 +40,6 @@ const SignUp = () => {
           <p  style={{ margin: '20px' }}>Sign up with Google:</p>
           
           <GoogleLogin
-            clientId="YOUR_CLIENT_ID"
             onSuccess = {credentialResponse => {
               if (credentialResponse.credential != null) {
                const USER_CREDENTIAL = jwtDecode(credentialResponse.credential);
@@ -47,6 +48,7 @@ const SignUp = () => {
              }
             }
             onFailure={(error) => console.log('Google login failed:', error)}
+            flow = 'auth-code'
           >
             <button>Sign up with Google</button>
           </GoogleLogin>
@@ -86,12 +88,17 @@ const SignUp = () => {
             </Button>
             
           </form>
-
+  
           
           {display && (
               <Box sx={{ marginTop: 2 }}>
                 <Typography variant="subtitle1">Name: {userData.given_name} {userData.family_name} </Typography>
                 <Typography variant="subtitle1">Email: {userData.email}</Typography>
+                <Typography variant="subtitle1">Role: {role}</Typography>
+
+                {studentNum && (
+                  <Typography variant="subtitle1">Student Number: {studentNum}</Typography>
+                )}
               </Box>
             )}
           
