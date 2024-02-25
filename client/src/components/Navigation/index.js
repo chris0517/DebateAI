@@ -49,6 +49,22 @@ export default function NavBar() {
                 cursor: 'pointer',
                 textTransform: 'none',
               }}
+              onClick={() => navigate('/chat')}
+            >
+              <Typography variant="h6" color="Black">
+                Chat
+              </Typography>
+            </Link>
+          </Button>
+
+          <Button color="inherit">
+            <Link
+              color="inherit"
+              style={{
+                textDecoration: 'inherit',
+                cursor: 'pointer',
+                textTransform: 'none',
+              }}
               onClick={() => navigate('/Classroom')}
             >
               <Typography variant="h6" color="Black">
