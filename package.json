@@ -16,6 +16,7 @@
     "nodemon": "^2.0.22",
     "openai": "^4.28.0",
     "recompose": "^0.30.0",
+    "supertest": "^6.3.4",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
