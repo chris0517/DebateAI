@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {system_prompt} from '../../constants';
 import {useParams} from 'react-router-dom';
+import NavBar from '../Navigation';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -97,7 +98,9 @@ const Chat = () => {
   };
 
   return (
+      
     <div className="flex flex-col h-screen p-4 bg-gray-100">
+      
       <div className="flex flex-col flex-auto overflow-auto bg-white shadow rounded-lg p-4 mb-4">
         {messages.map((message, index) => (
           <div
