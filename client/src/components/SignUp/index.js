@@ -1,226 +1,113 @@
-import React, { useState } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import React, { useEffect, useState } from 'react';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import NavBar from '../Navigation';
+import { jwtDecode } from "jwt-decode";
+
 import { TextField, Button, Container, Typography, Box, createTheme, ThemeProvider, Select, MenuItem } from '@mui/material';
 
 const SignUp = () => {
-    const [userData, setUserData] = useState({
-      firstName: '',
-      lastName: '',
-      email: '',
-      profilePhoto: '',
-      studentNumber: '',
-      role: '' 
-    });
+  const [userData, setUserData] = useState([]);
+  const [role, setRole] = useState("");
+  const [studentNum, setStudentNum] = useState(null);
+  const [display, setDisplay] = useState(false);
 
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setUserData({
-        ...userData,
-        [name]: value
-      });
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log('Submitting:', userData);
-      
-    };
+
   const handleGoogleLogin = (userInfo) => {
-    // Handle user sign-up logic here, e.g., sending user info to server
     console.log('User info:', userInfo);
+    setUserData(userInfo);
+    console.log(userData.given_name);
   };
 
+  const handleStudnetNumberChange = (e) => {
+    setStudentNum(e.target.value);
+  };
+
+  const handleChange = (e) => {
+    setRole(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setDisplay(true);
+    console.log('Submitting:', userData);
+  };
 
   return (
-    <GoogleOAuthProvider clientId="990000531059-kfc3o2bo6rvj4mmnqbc8dkcmqj50kknb.apps.googleusercontent.com"> 
-      <NavBar/>
-
-      <div style={{ padding: '20px' }}>
+    <div>
+      <NavBar />
       <Container maxWidth="xs">
         <Box sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        
-          <p>Sign up with Google:</p>
+          <p  style={{ margin: '20px' }}>Sign up with Google:</p>
+          
           <GoogleLogin
-            clientId="YOUR_CLIENT_ID"
-            onSuccess={handleGoogleLogin}
+            onSuccess = {credentialResponse => {
+              if (credentialResponse.credential != null) {
+               const USER_CREDENTIAL = jwtDecode(credentialResponse.credential);
+               handleGoogleLogin(USER_CREDENTIAL);
+              }
+             }
+            }
             onFailure={(error) => console.log('Google login failed:', error)}
+            flow = 'auth-code'
           >
             <button>Sign up with Google</button>
           </GoogleLogin>
 
-               <Select
+
+          <form onSubmit={handleSubmit}  style={{ marginTop: '20px', width: '60%' }}>
+            <Select
+              margin="normal"
+              fullWidth
+              value={role}
+              onChange={handleChange}
+              displayEmpty
+              variant="outlined"
+              name="role"
+              id="role"
+            >
+              <MenuItem value="" disabled>
+                Select Role
+              </MenuItem>
+              <MenuItem value="student">Student</MenuItem>
+              <MenuItem value="teacher">Teacher</MenuItem>
+            </Select>
+            {role === 'student' && (
+              <TextField
                 margin="normal"
                 fullWidth
-                value={userData.role}
-                onChange={handleChange}
-                displayEmpty
+                id="studentNumber"
+                label="Student Number"
+                name="studentNumber"
+                onChange={handleStudnetNumberChange}
                 variant="outlined"
-                name="role"
-                id="role"
-              >
-                <MenuItem value="" disabled>
-                  Select Role
-                </MenuItem>
-                <MenuItem value="student">Student</MenuItem>
-                <MenuItem value="teacher">Teacher</MenuItem>
-              </Select>
-              <Box sx={{ marginTop: 2}}>
-                {userData.role === 'student' && (
-                  <TextField
-                    margin="normal"
-                    fullWidth
-                    id="studentNumber"
-                    label="Student Number"
-                    name="studentNumber"
-                    value={userData.studentNumber}
-                    onChange={handleChange}
-                    variant="outlined"
-                  />
+              />
+            )}
+
+            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
+              Sign Up
+            </Button>
+            
+          </form>
+  
+          
+          {display && (
+              <Box sx={{ marginTop: 2 }}>
+                <Typography variant="subtitle1">Name: {userData.given_name} {userData.family_name} </Typography>
+                <Typography variant="subtitle1">Email: {userData.email}</Typography>
+                <Typography variant="subtitle1">Role: {role}</Typography>
+
+                {studentNum && (
+                  <Typography variant="subtitle1">Student Number: {studentNum}</Typography>
                 )}
               </Box>
+            )}
+          
 
         </Box>
       </Container>
-      </div>
-    </GoogleOAuthProvider>
+    </div>
   );
 };
 
 export default SignUp;
 
-// import React, { useState } from 'react';
-// import { TextField, Button, Container, Typography, Box, createTheme, ThemeProvider, Select, MenuItem } from '@mui/material';
-// import NavBar from '../Navigation';
-
-// const serverURL = "";
-  
-//   const SignUp = () => {
-//     const [userData, setUserData] = useState({
-//       firstName: '',
-//       lastName: '',
-//       email: '',
-//       profilePhoto: '',
-//       studentNumber: '',
-//       role: '' 
-//     });
-  
-//     const handleChange = (e) => {
-//       const { name, value } = e.target;
-//       setUserData({
-//         ...userData,
-//         [name]: value
-//       });
-//     };
-  
-//     const handleSubmit = (e) => {
-//       e.preventDefault();
-//       console.log('Submitting:', userData);
-      
-//     };
-  
-//     return (
-//       <div>
-//         <NavBar/>
-//         <Container maxWidth="xs">
-//           <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//             <Typography component="h1" variant="h5" color='#000'>
-//               Sign Up
-//             </Typography>
-//             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-//               <TextField
-//                 margin="normal"
-//                 required
-//                 fullWidth
-//                 id="firstName"
-//                 label="First Name"
-//                 name="firstName"
-//                 autoFocus
-//                 value={userData.firstName}
-//                 onChange={handleChange}
-//                 variant="outlined"
-//               />
-//               <TextField
-//                 margin="normal"
-//                 required
-//                 fullWidth
-//                 id="lastName"
-//                 label="Last Name"
-//                 name="lastName"
-//                 value={userData.lastName}
-//                 onChange={handleChange}
-//                 variant="outlined"
-//               />
-//               <TextField
-//                 margin="normal"
-//                 required
-//                 fullWidth
-//                 id="email"
-//                 label="Email Address"
-//                 name="email"
-//                 type="email"
-//                 value={userData.email}
-//                 onChange={handleChange}
-//                 variant="outlined"
-//               />
-//               <TextField
-//                 margin="normal"
-//                 fullWidth
-//                 id="profilePhoto"
-//                 label="Profile Photo URL"
-//                 name="profilePhoto"
-//                 value={userData.profilePhoto}
-//                 onChange={handleChange}
-//                 variant="outlined"
-//               />
-//               <Box sx={{ marginTop: 2}}>
-
-//               <Select
-//                 margin="normal"
-//                 fullWidth
-//                 value={userData.role}
-//                 onChange={handleChange}
-//                 displayEmpty
-//                 variant="outlined"
-//                 name="role"
-//                 id="role"
-//               >
-//                 <MenuItem value="" disabled>
-//                   Select Role
-//                 </MenuItem>
-//                 <MenuItem value="student">Student</MenuItem>
-//                 <MenuItem value="teacher">Teacher</MenuItem>
-//               </Select>
-//               <Box sx={{ marginTop: 2}}>
-//                 {userData.role === 'student' && (
-//                   <TextField
-//                     margin="normal"
-//                     fullWidth
-//                     id="studentNumber"
-//                     label="Student Number"
-//                     name="studentNumber"
-//                     value={userData.studentNumber}
-//                     onChange={handleChange}
-//                     variant="outlined"
-//                   />
-//                 )}
-//               </Box>
-
-//               </Box>
-//               <Button
-//                 type="submit"
-//                 fullWidth
-//                 variant="contained"
-//                 sx={{ mt: 3, mb: 2 }}
-//               >
-//                 Sign Up
-//               </Button>
-//             </Box>
-//           </Box>
-//         </Container>
-//         </div>
-//     );
-//   };
-  
-//   export default SignUp;
