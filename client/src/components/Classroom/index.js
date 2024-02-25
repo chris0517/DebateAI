@@ -15,7 +15,7 @@ const Classroom = () => {
     <div style={{padding: '20px'}}>
       <NavBar />
       <Grid container spacing={3} padding={3}>
-        <Typography color="#FFFFFF">Classroom Page</Typography>
+        <Typography color="#000">Classroom Page</Typography>
       </Grid>
     </div>
   );
