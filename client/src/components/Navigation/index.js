@@ -65,7 +65,7 @@ export default function NavBar() {
                 cursor: 'pointer',
                 textTransform: 'none',
               }}
-              onClick={() => navigate('/Classroom')}
+              onClick={() => navigate('/classroom')}
             >
               <Typography variant="h6" color="Black">
                 Classroom
@@ -84,7 +84,7 @@ export default function NavBar() {
               onClick={() => navigate('/login')}
             >
               <Typography variant="h6" color="Black">
-                Log in
+                Log In
               </Typography>
             </Link>
           </Button>
