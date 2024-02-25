@@ -1,54 +1,46 @@
-// Import necessary libraries
-const request = require('supertest');
-const express = require('express');
-const mysql = require('mysql');
-
+// Import necessary libraries using ES Module syntax
+import request from 'supertest';
+import express from 'express';
+import mysql from 'mysql';
+import router from '../../../db/topics.js'; // Import the router that includes the endpoint you're testing
 // Mock the mysql module
-
-let config = {
-  host: 'ec2-3-137-65-169.us-east-2.compute.amazonaws.com',
-  user: 'a25bharg',
-  password: 'MSCI342',
-  database: 'a25bharg',
-};
+jest.mock('mysql');
 
 const app = express();
 app.use(express.json());
-jest.mock('mysql');
-
-app.post('/getTopics', (req, res) => {
-  let connection = mysql.createConnection(config);
-
-  const sql = `SELECT * FROM Topics`;
-
-  connection.query(sql, (error, results, fields) => {
-    if (error) {
-      console.log('error: ', error);
-      return console.error(error.message);
-    }
-    let string = JSON.stringify(results);
-    res.send({express: string});
-  });
-  connection.end();
-});
-
-const mockTopics = [
-  {id: 1, name: 'Topic 1'},
-  {id: 2, name: 'Topic 2'},
-];
+app.use(router); // Use the router that includes the endpoint you're testing
 
 describe('POST /getTopics', () => {
   it('should fetch all topics', async () => {
+    // Mock MySQL connection and query method
+    const mockQuery = jest.fn().mockImplementation((sql, callback) =>
+      callback(null, [
+        {id: 1, name: 'Topic 1'},
+        {id: 2, name: 'Topic 2'},
+      ]),
+    );
     mysql.createConnection.mockReturnValue({
-      query: jest
-        .fn()
-        .mockImplementation((sql, callback) => callback(null, mockTopics)),
+      query: mockQuery,
       end: jest.fn(),
     });
 
+    // Perform the request to the endpoint
     const response = await request(app).post('/getTopics').send();
 
+    // Assert the response
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({express: JSON.stringify(mockTopics)});
+    expect(response.body).toEqual({
+      express: JSON.stringify([
+        {id: 1, name: 'Topic 1'},
+        {id: 2, name: 'Topic 2'},
+      ]),
+    });
+    // Ensure the query was called with the correct SQL statement
+    expect(mockQuery).toHaveBeenCalledWith(
+      'SELECT * FROM Topics',
+      expect.any(Function), // Since SQL query does not use data array, we expect a callback function here
+    );
   });
+
+  // Additional tests can follow...
 });
