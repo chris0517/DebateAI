@@ -12,12 +12,16 @@ const SignUp = () => {
   const [role, setRole] = useState("");
   const [studentNum, setStudentNum] = useState(null);
   const [display, setDisplay] = useState(false);
+  const [success, setSuccess] = useState(false);
 
 
   const handleGoogleLogin = (userInfo) => {
     console.log('User info:', userInfo);
     setUserData(userInfo);
     console.log(userData.given_name);
+    if(userInfo != null){
+      setSuccess(true);
+    }
   };
 
   const handleStudnetNumberChange = (e) => {
@@ -125,11 +129,16 @@ const SignUp = () => {
             
           </form>
   
-          
-          {display && (
+          {success && (
               <Box sx={{ marginTop: 2 }}>
+                <Typography variant>Successfully signed in as:</Typography>
                 <Typography variant="subtitle1">Name:  {userData.given_name} {userData.family_name} </Typography>
                 <Typography variant="subtitle1">Email: {userData.email}</Typography>
+            </Box>
+          )}
+          {display && (
+              <Box sx={{ marginTop: 2 }}>
+
                 <Typography variant="subtitle1">Role: {role}</Typography>
                 <Typography variant="subtitle1">Student Number: {studentNum}</Typography>
                 
