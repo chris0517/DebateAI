@@ -5,6 +5,8 @@ import { jwtDecode } from "jwt-decode";
 
 import { TextField, Button, Container, Typography, Box, createTheme, ThemeProvider, Select, MenuItem } from '@mui/material';
 
+const serverURL = '';
+
 const SignUp = () => {
   const [userData, setUserData] = useState([]);
   const [role, setRole] = useState("");
@@ -30,6 +32,46 @@ const SignUp = () => {
     e.preventDefault();
     setDisplay(true);
     console.log('Submitting:', userData);
+
+    const userInfo = {
+      // name: `${userData.given_name} ${userData.family_name}`,
+      // email: userData.email,
+      // role: role,
+      // studentNum: studentNum
+      name: "test",
+      email: "test@gmail.com",
+      role: "student",
+      studentNum: "20935366"
+
+    };
+
+    callApiAddUser(userInfo)
+        .then(res => {
+          console.log('callApiAddUser response: ', res);
+        })
+        .catch(error => {
+          console.error('Error adding user:', error.message);
+        });
+  };
+
+  const callApiAddUser = async requestBody => {
+    const url = serverURL + '/api/addUser';
+    console.log('Sending user data to:', url);
+    console.log(requestBody)
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    const body = await response.json();
+    console.log("body", body);
+
+    if (response.status !== 200) throw Error(body.message);
+    return body;
   };
 
   return (
@@ -37,7 +79,7 @@ const SignUp = () => {
       <NavBar />
       <Container maxWidth="xs">
         <Box sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <p  style={{ margin: '20px' }}>Sign up with Google:</p>
+        <p  style={{ margin: '20px' }}>Sign up with Google</p>
           
           <GoogleLogin
             onSuccess = {credentialResponse => {
@@ -48,9 +90,7 @@ const SignUp = () => {
              }
             }
             onFailure={(error) => console.log('Google login failed:', error)}
-            flow = 'auth-code'
           >
-            <button>Sign up with Google</button>
           </GoogleLogin>
 
 
@@ -92,13 +132,11 @@ const SignUp = () => {
           
           {display && (
               <Box sx={{ marginTop: 2 }}>
-                <Typography variant="subtitle1">Name: {userData.given_name} {userData.family_name} </Typography>
+                <Typography variant="subtitle1">Name:  {userData.given_name} {userData.family_name} </Typography>
                 <Typography variant="subtitle1">Email: {userData.email}</Typography>
                 <Typography variant="subtitle1">Role: {role}</Typography>
-
-                {studentNum && (
-                  <Typography variant="subtitle1">Student Number: {studentNum}</Typography>
-                )}
+                <Typography variant="subtitle1">Student Number: {studentNum}</Typography>
+                
               </Box>
             )}
           
