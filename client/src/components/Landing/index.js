@@ -2,15 +2,21 @@ import React, {useState, useEffect} from 'react';
 import {Grid, Paper, Typography} from '@mui/material';
 import NavBar from '../Navigation';
 import {useNavigate} from 'react-router-dom';
+import Phone from './icons/mobile.png';
+import Mari from './icons/Mari.png';
+import Climate from './icons/Climate.png';
+
+
 
 const serverURL = '';
 
-// const topics = [
-//   {title: 'Gun Control', image: Gun},
-//   {title: 'Climate Change', image: Climate},
-//   {title: 'Legalization of Marijuana', image: Mari},
-// ];
+const phone = [ Phone ];
+const climate = [ Climate ];
+const mari = [ Mari ];
 
+
+// {title: 'Climate Change', image: Climate},
+// {title: 'Legalization of Marijuana', image: Mari},
 const DebateTopics = () => {
   const [topics, setTopics] = useState([]);
 
@@ -58,12 +64,32 @@ const DebateTopics = () => {
             key={index}
             onClick={() => navigate(`/chat/${topic.topic_prompt}`)}
           >
-            <Paper style={{padding: '20px', textAlign: 'center'}}>
+            <Paper style={{padding: '20px', textAlign: 'center', height: '100%'}}>
               <Typography variant="h5">{topic.title}</Typography>
-              <img
-                src={topic.banner_link}
-                style={{Width: '100px', height: '200px'}}
-              />
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+              {topic.title === 'Climate Change' &&(
+                <img
+                  src={Climate}
+                  style={{Width: '100px', height: '190px', margin: '20px'}}
+                />
+                )
+              }
+              {topic.title === 'Legalization of Marijuana' &&(
+                <img
+                  src={Mari}
+                  style={{Width: '100px', height: '180px', margin: '20px'}}
+                />
+                )
+              }              
+              {topic.title === 'Iphones vs android' &&(
+                <img
+                  src={Phone}
+                  style={{Width: '100px', height: '180px', margin: '20px'}}
+                />
+                )
+              }
+              </div>
               <p>{topic.description}</p>
             </Paper>
           </Grid>

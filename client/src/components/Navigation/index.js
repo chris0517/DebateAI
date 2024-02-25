@@ -41,7 +41,7 @@ export default function NavBar() {
             </Link>
           </Button>
 
-          <Button color="inherit">
+          {/* <Button color="inherit">
             <Link
               color="inherit"
               style={{
@@ -55,7 +55,7 @@ export default function NavBar() {
                 Chat
               </Typography>
             </Link>
-          </Button>
+          </Button> */}
 
           <Button color="inherit">
             <Link
