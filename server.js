@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
@@ -37,7 +37,7 @@ app.post("/api/getMovies", (req, res) => {
 app.post("/api/getTopics", (req, res) => {
   let connection = mysql.createConnection(config);
 
-  const sql = `SELECT * FROM movies`;
+  const sql = `SELECT * FROM Topics`;
 
   connection.query(sql, (error, results, fields) => {
     if (error) {
