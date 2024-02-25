@@ -8,8 +8,8 @@ const openai = new OpenAI({
 
 // API to add a review to the database
 router.post("/chatCompletion", async (req, res) => {
-  console.log("YEEEE");
-  console.log(req.body);
+  // console.log("YEEEE");
+  // console.log(req.body);
   const chatCompletion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: req.body.messages,
@@ -19,9 +19,9 @@ router.post("/chatCompletion", async (req, res) => {
     frequency_penalty: 0,
     presence_penalty: 0,
   });
-  console.log(chatCompletion);
+  // console.log(chatCompletion);
 
-  console.log(chatCompletion.choices[0].message.content);
+  // console.log(chatCompletion.choices[0].message.content);
   res.send({ express: chatCompletion.choices[0].message.content });
 });
 
