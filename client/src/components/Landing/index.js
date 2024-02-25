@@ -1,18 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {Grid, Paper, Typography} from '@mui/material';
-import Gun from './icons/Gun.png';
-import Climate from './icons/Climate.png';
-import Mari from './icons/Mari.png';
 import NavBar from '../Navigation';
 import {useNavigate} from 'react-router-dom';
 
-const topics = [
-  {title: 'Gun Control', image: Gun},
-  {title: 'Climate Change', image: Climate},
-  {title: 'Legalization of Marijuana', image: Mari},
-];
+const serverURL = '';
+
+// const topics = [
+//   {title: 'Gun Control', image: Gun},
+//   {title: 'Climate Change', image: Climate},
+//   {title: 'Legalization of Marijuana', image: Mari},
+// ];
+
 
 const DebateTopics = () => {
+
+  const [topics, setTopics] = useState([]);
+
+  React.useEffect(() => {
+    loadTitles();
+  }, []);
+
+  const loadTitles = () => {
+    callApiLoadTitles().then(res => {
+      console.log('callApiLoadTitles returned: ', res);
+      var parsed = JSON.parse(res.express);
+      console.log('callApiLoadTitles parsed: ', parsed);
+      setTopics(parsed);
+    });
+  };
+  
+  const callApiLoadTitles = async () => {
+    const url = serverURL + '/api/getTopics';
+    console.log(url);
+  
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log('User settings: ', body);
+    return body;
+  };
+  
   const navigate = useNavigate();
   return (
     <div className="h-full bg-green border-yellow border-1">
@@ -31,9 +63,10 @@ const DebateTopics = () => {
             <Paper style={{padding: '20px', textAlign: 'center'}}>
               <Typography variant="h5">{topic.title}</Typography>
               <img
-                src={topic.image}
+                src={topic.banner_link}
                 style={{Width: '100px', height: '200px'}}
               />
+              <p>{topic.description}</p>
             </Paper>
           </Grid>
         ))}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Grid, TextField, Button, Container, Typography, Box, createTheme, ThemeProvider} from '@mui/material';
 import NavBar from '../Navigation';
-import GoogleLoginButton from './GoogleLoginButton';
+import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
@@ -20,15 +20,15 @@ const LogIn = () => {
   return (
     
     <GoogleOAuthProvider clientId="990000531059-kfc3o2bo6rvj4mmnqbc8dkcmqj50kknb.apps.googleusercontent.com">
-     <div style={{ padding: '20px' }}>
       <NavBar />
+     <div style={{ padding: '20px' }}>
        <Container maxWidth="xs">
         <Box sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography margin="normal" component="h1" variant="h5" color='#000'>
             Sign in
           </Typography>
 
-          <GoogleLoginButton onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} />
+          <GoogleLogin onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} />
         </Box>
       </Container>
 
