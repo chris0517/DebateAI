@@ -1,6 +1,3 @@
-import mysql from "mysql";
-import config from "./config.js";
-import fetch from "node-fetch";
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -8,6 +5,7 @@ import "dotenv/config";
 import bodyParser from "body-parser";
 import response from "express";
 import OpenAI from "./api/openai.js";
+import Topics from "./db/topics.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,20 +16,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "client/build")));
 // API to read topics from the database
-app.post("/api/getTopics", (req, res) => {
-  let connection = mysql.createConnection(config);
-
-  const sql = `SELECT * FROM Topics`;
-
-  connection.query(sql, (error, results, fields) => {
-    if (error) {
-      return console.error(error.message);
-    }
-    let string = JSON.stringify(results);
-    res.send({ express: string });
-  });
-  connection.end();
-});
+app.use("/api", Topics);
 //all OpenAI routes
 app.use("/api", OpenAI);
 

@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {system_prompt} from '../../constants';
+import {useParams} from 'react-router-dom';
+
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [openAIMessages, setOpenAIMessages] = useState([
@@ -7,13 +9,15 @@ const Chat = () => {
   ]);
   const serverURL = '';
   const [inputValue, setInputValue] = useState('');
+  let {topic} = useParams();
 
-  console.log('OpenAI Messages: ', openAIMessages);
-  console.log('Messages: ', messages);
   useEffect(async () => {
     //need to make a call to the db to get the topic from topic id
     //call API get DB topic
-    const userMessage = await callAPITopics();
+    const userMessage = {
+      role: 'user',
+      content: `Topic: ${topic}`,
+    };
     handleSendMessageToAI([...openAIMessages, userMessage]);
     setOpenAIMessages(messages => [...messages, userMessage]);
   }, []);

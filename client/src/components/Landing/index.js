@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {Grid, Paper, Typography} from '@mui/material';
 import NavBar from '../Navigation';
 import {useNavigate} from 'react-router-dom';
@@ -11,9 +11,7 @@ const serverURL = '';
 //   {title: 'Legalization of Marijuana', image: Mari},
 // ];
 
-
 const DebateTopics = () => {
-
   const [topics, setTopics] = useState([]);
 
   React.useEffect(() => {
@@ -28,11 +26,11 @@ const DebateTopics = () => {
       setTopics(parsed);
     });
   };
-  
+
   const callApiLoadTitles = async () => {
     const url = serverURL + '/api/getTopics';
     console.log(url);
-  
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -44,7 +42,7 @@ const DebateTopics = () => {
     console.log('User settings: ', body);
     return body;
   };
-  
+  console.log('topics: ', topics);
   const navigate = useNavigate();
   return (
     <div className="h-full bg-green border-yellow border-1">
@@ -58,7 +56,7 @@ const DebateTopics = () => {
             sm={6}
             md={4}
             key={index}
-            onClick={() => navigate(`/chat`)}
+            onClick={() => navigate(`/chat/${topic.topic_prompt}`)}
           >
             <Paper style={{padding: '20px', textAlign: 'center'}}>
               <Typography variant="h5">{topic.title}</Typography>
