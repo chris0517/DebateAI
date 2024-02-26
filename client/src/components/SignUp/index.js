@@ -128,24 +128,26 @@ const SignUp = () => {
             </Button>
             
           </form>
-  
+          
+          
           {success && (
               <Box sx={{ marginTop: 2 }}>
                 <Typography variant>Successfully signed in as:</Typography>
                 <Typography variant="subtitle1">Name:  {userData.given_name} {userData.family_name} </Typography>
                 <Typography variant="subtitle1">Email: {userData.email}</Typography>
+                {display && (
+                  <Box sx={{ marginTop: 0}}>
+                    <Typography variant="subtitle1">Role: {role}</Typography>
+                    {role === 'student' && (
+                      <Typography variant="subtitle1">Student Number: {studentNum}</Typography>
+                    )}
+                  </Box>
+                )}
             </Box>
           )}
-          {display && (
-              <Box sx={{ marginTop: 2 }}>
 
-                <Typography variant="subtitle1">Role: {role}</Typography>
-                <Typography variant="subtitle1">Student Number: {studentNum}</Typography>
-                
-              </Box>
-            )}
+
           
-
         </Box>
       </Container>
     </div>
