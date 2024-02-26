@@ -1,6 +1,19 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=13372103)
 
-# MSci 342 - Project template
+# MSci 342 - DebateAI
+
+## Overview
+DebateAI is an ed-tech platform that allows students to pick topics to debate on, pick a side to be on, and have a well-structured debate with the AI. In the debate, the AI will look for claims that rebut their position, specific evidence, and analysis/reasoning to proceed.  After the debate, the AI provides feedback to the student, one or two things they did the best, and a suggestion for improvement. 
+
+
+1. **Browsing Debate Topics**: Users can browse through a list of debate topics stored in a MySQL database. Each topic includes a title, description, and icon. The application successfully retrieves and displays these details. 
+
+2. **Debate Bot**: Users can engage in debates and discussions by clicking on any of the topics on the landing page. This action directs them to a chat page where they can interact with a trained AI that prompts them with the selected topic.
+
+3. **Sign Up, Sign In using Gmail**: The application allows users to sign up easily using their Gmail accounts. It integrates with Google's endpoint for authentication. Upon successful authentication, the user's credentials are decoded and essential information such as name, email address, role (student or teacher), and student number (if applicable) are sent to the MySQL database. 
+
+
+
 
 ## This repo contains a template project for starting your development. It is based on the sample assignment solution from MSci 245.
 
