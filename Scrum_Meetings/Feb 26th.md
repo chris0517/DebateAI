@@ -9,4 +9,5 @@ Difficulties Encountered:
 
 ### Shangeeth:
 Yesterday: Began writing report for sprint 1 
-Today: Working on implementing: As a student, I want to browse through a variety of debate topics available.
+Today: Working on implementing: As a student, I want to browse through a variety of debate topics available. 
+Testing sign up page
