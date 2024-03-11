@@ -8,4 +8,4 @@ Difficulties Encountered: Discussing with team to determine whether a students c
 
 ### Shangeeth:
 Yesterday: Finsihed implementing the landing page
-Today: Researching different debate topics and creating icons. 
+Today: Researching different debate topics to put in the sql data base so students have a variety of topics. Creating icons for each debate topic that follows the astheic of the website.   
