@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,10 +7,13 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import {useNavigate} from 'react-router-dom';
+import { AuthContext } from '../Firebase/authContext';
+
 // import MenuIcon from '@mui/icons-material/Menu';
 
 export default function NavBar() {
   const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <Box sx={{flexGrow: 1}}>
@@ -24,6 +27,7 @@ export default function NavBar() {
           >
             DebateAI
           </Typography>
+
 
           <Button color="inherit">
             <Link
@@ -100,6 +104,14 @@ export default function NavBar() {
                   </Typography>
             </Link>
           </Button>
+
+          <div className="user-info">
+            {currentUser ? (
+              <Typography color="Black" className="user-name">{currentUser.displayName}</Typography>
+            ) : (
+              <Typography className="login-link">Login</Typography>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
     </Box>
