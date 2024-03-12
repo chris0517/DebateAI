@@ -1,101 +1,107 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import NavBar from '../Navigation';
-import { jwtDecode } from "jwt-decode";
-
 import { TextField, Button, Container, Typography, Box, createTheme, ThemeProvider, Select, MenuItem } from '@mui/material';
-
+import { withFirebase } from '../Firebase'; // Import Firebase context and HOC
+import Firebase from '../Firebase'
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 const serverURL = '';
 
-const SignUp = () => {
-  const [userData, setUserData] = useState([]);
-  const [role, setRole] = useState("");
-  const [studentNum, setStudentNum] = useState(null);
-  const [display, setDisplay] = useState(false);
-  const [success, setSuccess] = useState(false);
+
+const SignUp = () => { // Destructure firebase from props
+    const [userData, setUserData] = useState({});
+    const [role, setRole] = useState("");
+    const [studentNum, setStudentNum] = useState(null);
+    const [display, setDisplay] = useState(false);
+    const [success, setSuccess] = useState(false);
 
 
-  const handleGoogleLogin = (userInfo) => {
-    console.log('User info:', userInfo);
-    setUserData(userInfo);
-    console.log(userData.given_name);
-    if(userInfo != null){
-      setSuccess(true);
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider(); // Create GoogleAuthProvider instance
+      const result = await signInWithPopup(Firebase.auth, provider); // Sign in with Google popup      const user = result.user;
+      //setUserData.name(result.user.name);
+      //setUserData.email(result.user.email);
+      setUserData({ name: result.user.displayName, email: result.user.email});
+      console.log(result.user);
+      console.log(userData.name);
+    } catch (error) {
+      console.error('Google login failed:', error);
     }
   };
 
-  const handleStudnetNumberChange = (e) => {
-    setStudentNum(e.target.value);
-  };
-
-  const handleChange = (e) => {
-    setRole(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setDisplay(true);
-    console.log('Submitting:', userData);
-
-    const userInfo = {
-      name: `${userData.given_name} ${userData.family_name}`,
-      email: userData.email,
-      role: role,
-      studentNum: studentNum
-
+    const handleStudnetNumberChange = (e) => {
+      setStudentNum(e.target.value);
     };
 
-    callApiAddUser(userInfo)
-        .then(res => {
-          console.log('callApiAddUser response: ', res);
-        })
-        .catch(error => {
-          console.error('Error adding user:', error.message);
+    const handleChange = (e) => {
+      setRole(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setDisplay(true);
+      console.log('Submitting:', userData);
+
+      const userInfo = {
+        name: userData.name,
+        email: userData.email,
+        role: role,
+        studentNum: studentNum
+      };
+
+      callApiAddUser(userInfo)
+          .then(res => {
+            console.log('callApiAddUser response: ', res);
+          })
+          .catch(error => {
+            console.error('Error adding user:', error);
+
+          });
+    };
+
+    const callApiAddUser = async requestBody => {
+      const url = serverURL + '/api/addUser';
+      console.log('Sending user data to:', url);
+      console.log(requestBody)
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody)
         });
-  };
+    
+        const body = await response.json();
+        console.log("body", body);
+    
+        if (response.status !== 200) {
+          throw Error(body.error); // Throw the error received from the API
+        }
+        return body;
+      } catch (error) {
+        // Check if the error message indicates a duplicate entry error
+        if (error.message.includes("ER_DUP_ENTRY")) {
+          // Display error message on the webpage
+          alert("Error: This email is already registered.");
+        } else {
+          // For other errors, display the error message received from the API
+          alert(error.message);
+        }
+      }
 
-  const callApiAddUser = async requestBody => {
-    const url = serverURL + '/api/addUser';
-    console.log('Sending user data to:', url);
-    console.log(requestBody)
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody)
-    });
-
-    const body = await response.json();
-    console.log("body", body);
-
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
-
+    };
   return (
     <div>
       <NavBar />
       <Container maxWidth="xs">
         <Box sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <p  style={{ margin: '20px' }}>Sign up with Google</p>
-          
-          <GoogleLogin
-            onSuccess = {credentialResponse => {
-              if (credentialResponse.credential != null) {
-               const USER_CREDENTIAL = jwtDecode(credentialResponse.credential);
-               handleGoogleLogin(USER_CREDENTIAL);
-              }
-             }
-            }
-            onFailure={(error) => console.log('Google login failed:', error)}
-          >
-          </GoogleLogin>
+          <p style={{ margin: '20px' }}>Sign up with Google</p>
 
-
+          <Button variant="contained" onClick={handleGoogleLogin}>Sign Up With Google</Button>
           <form onSubmit={handleSubmit}  style={{ marginTop: '20px', width: '60%' }}>
-            <Select
+             <Select
               margin="normal"
               fullWidth
               value={role}
@@ -145,14 +151,11 @@ const SignUp = () => {
                 )}
             </Box>
           )}
-
-
-          
+        
         </Box>
       </Container>
     </div>
   );
 };
 
-export default SignUp;
-
+export default withFirebase(SignUp); // Wrap component with withFirebase HOC
