@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 import { Grid, TextField, Button, Container, Typography, Box, createTheme, ThemeProvider} from '@mui/material';
 import NavBar from '../Navigation';
-import { GoogleLogin } from '@react-oauth/google';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { withFirebase } from '../Firebase'; // Import Firebase context and HOC
+import Firebase from '../Firebase'
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 
 const LogIn = () => {
@@ -16,10 +17,17 @@ const LogIn = () => {
     // Handle failed login
     console.error('Login Failed:', error);
   };
-
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider(); // Create GoogleAuthProvider instance
+      const result = await signInWithPopup(Firebase.auth, provider); // Sign in with Google popup      const user = result.user;
+    } catch (error) {
+      console.error('Google login failed:', error);
+    }
+  };
   return (
     
-    <GoogleOAuthProvider clientId="990000531059-kfc3o2bo6rvj4mmnqbc8dkcmqj50kknb.apps.googleusercontent.com">
+    <div>
       <NavBar />
      <div style={{ padding: '20px' }}>
        <Container maxWidth="xs">
@@ -28,12 +36,12 @@ const LogIn = () => {
             Sign in
           </Typography>
 
-          <GoogleLogin onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} />
+          <Button variant="contained" onClick={handleGoogleLogin}>Sign Up With Google</Button>
         </Box>
       </Container>
 
       </div>
-    </GoogleOAuthProvider>
+    </div>
 
   );
 };

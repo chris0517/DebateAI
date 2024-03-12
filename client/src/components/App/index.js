@@ -7,11 +7,13 @@ import Classroom from '../Classroom';
 import SignUp from '../SignUp';
 import Chat from '../Chat';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import Firebase, {FirebaseContext} from '../Firebase'
 
 
 const App = () => {
   return (
-    <GoogleOAuthProvider clientId="990000531059-kfc3o2bo6rvj4mmnqbc8dkcmqj50kknb.apps.googleusercontent.com">
+    // <GoogleOAuthProvider clientId="990000531059-kfc3o2bo6rvj4mmnqbc8dkcmqj50kknb.apps.googleusercontent.com">
+    <FirebaseContext.Provider value={Firebase}>
     <div>
       <Grid>
         <Box sx={{width: '100%', height: '100vh'}}>
@@ -27,7 +29,8 @@ const App = () => {
         </Box>
       </Grid>
     </div>
-    </GoogleOAuthProvider>
+    </FirebaseContext.Provider>
+    // </GoogleOAuthProvider>
 
   );
 };

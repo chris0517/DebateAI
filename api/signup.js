@@ -19,8 +19,8 @@ router.post("/addUser", (req, res) => {
   }
   connection.query(sql, data, (error, results, fields) => {
     if (error) {
-      console.error("Error adding review:", error.message);
-      return res.status(500).json({ error: "Error adding review to the database" });
+      console.error("Error adding user:", error.message);
+      return res.status(500).json({ error: "Error adding user: " + error.message });
     }
 
     return res.status(200).json({ success: true });
