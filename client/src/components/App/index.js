@@ -8,29 +8,31 @@ import SignUp from '../SignUp';
 import Chat from '../Chat';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Firebase, {FirebaseContext} from '../Firebase'
+import { AuthProvider } from '../Firebase/authContext';
 
 
 const App = () => {
   return (
-    // <GoogleOAuthProvider clientId="990000531059-kfc3o2bo6rvj4mmnqbc8dkcmqj50kknb.apps.googleusercontent.com">
-    <FirebaseContext.Provider value={Firebase}>
-    <div>
-      <Grid>
-        <Box sx={{width: '100%', height: '100vh'}}>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/classroom" element={<Classroom />} />
-              <Route path="/chat/:topic" element={<Chat />} />
-            </Routes>
-          </Router>
-        </Box>
-      </Grid>
-    </div>
-    </FirebaseContext.Provider>
-    // </GoogleOAuthProvider>
+    <AuthProvider>
+
+      <FirebaseContext.Provider value={Firebase}>
+      <div>
+        <Grid>
+          <Box sx={{width: '100%', height: '100vh'}}>
+            <Router>
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<LogIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/classroom" element={<Classroom />} />
+                <Route path="/chat/:topic" element={<Chat />} />
+              </Routes>
+            </Router>
+          </Box>
+        </Grid>
+      </div>
+      </FirebaseContext.Provider>
+    </AuthProvider>
 
   );
 };

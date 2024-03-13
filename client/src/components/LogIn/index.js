@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 
 import { Grid, TextField, Button, Container, Typography, Box, createTheme, ThemeProvider} from '@mui/material';
 import NavBar from '../Navigation';
@@ -6,8 +6,11 @@ import { withFirebase } from '../Firebase'; // Import Firebase context and HOC
 import Firebase from '../Firebase'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
+import { AuthContext } from '../Firebase/authContext';
 
 const LogIn = () => {
+  const { currentUser } = useContext(AuthContext);
+
   const handleLoginSuccess = (response) => {
     // Handle successful login
     console.log('Login Success:', response);
@@ -20,7 +23,8 @@ const LogIn = () => {
   const handleGoogleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider(); // Create GoogleAuthProvider instance
-      const result = await signInWithPopup(Firebase.auth, provider); // Sign in with Google popup      const user = result.user;
+      const result = await signInWithPopup(Firebase.auth, provider); // Sign in with Google popup      
+      const user = result.user;
     } catch (error) {
       console.error('Google login failed:', error);
     }
@@ -35,7 +39,11 @@ const LogIn = () => {
           <Typography margin="normal" component="h1" variant="h5" color='#000'>
             Sign in
           </Typography>
-
+          {currentUser ? (
+              <Typography className="user-name">{currentUser.displayName}</Typography>
+            ) : (
+              <Typography className="login-link">Login</Typography>
+            )}
           <Button variant="contained" onClick={handleGoogleLogin}>Sign Up With Google</Button>
         </Box>
       </Container>
