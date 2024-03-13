@@ -107,7 +107,16 @@ export default function NavBar() {
 
           <div className="user-info">
             {currentUser ? (
-              <Typography color="Black" className="user-name">{currentUser.displayName}</Typography>
+              <img 
+                src={currentUser.photoURL} 
+                alt="User Profile" 
+                className="user-profile" 
+                style={{
+                width: '40px', // Adjust size as needed
+                height: '40px', // Adjust size as needed
+                borderRadius: '50%' // Makes the image circular
+              }}/>
+              // <Typography color="Black" className="user-name">{currentUser.displayName}</Typography>
             ) : (
               <Typography className="login-link">Login</Typography>
             )}
