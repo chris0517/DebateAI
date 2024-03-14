@@ -51,7 +51,7 @@ const DebateTopics = () => {
   console.log('topics: ', topics);
   const navigate = useNavigate();
   return (
-    <div className="h-full bg-green border-yellow border-1">
+    <div style = {{padding: '20px'}} className="h-full bg-green border-yellow border-1">
       <NavBar />
 
       <Grid container spacing={3} padding={3}>

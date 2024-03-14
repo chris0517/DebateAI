@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth'; // Import other Firebase services if needed
+import { getAuth  } from 'firebase/auth'; // Import other Firebase services if needed
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -33,10 +33,14 @@ class Firebase {
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 
   doGetIdToken = bool => {
-    return this.auth.currentUser.getIdToken(/* forceRefresh */ bool);
+    const idToken = this.auth.currentUser.getIdToken(/* forceRefresh */ bool)
+    return   this.auth.verifyIdToken(idToken)
+    ;
   };
 
-  doGetUserByEmail = email => this.auth.getUserByEmail(email);
+  doGetUserByEmail = email => this.auth.getUserByEmail(email)
+
+
 }
 
 const firebaseInstance = new Firebase();

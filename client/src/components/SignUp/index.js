@@ -93,11 +93,11 @@ const SignUp = () => { // Destructure firebase from props
 
     };
   return (
-    <div>
+    <div style = {{padding: '20px'}}>
       <NavBar />
       <Container maxWidth="xs">
         <Box sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <p style={{ margin: '20px' }}>Sign up with Google</p>
+          <Typography variant='h4' style={{ padding: '20px' }}>Sign up with Google</Typography>
 
           <Button variant="contained" onClick={handleGoogleLogin}>Sign Up With Google</Button>
           <form onSubmit={handleSubmit}  style={{ marginTop: '20px', width: '60%' }}>
@@ -128,10 +128,13 @@ const SignUp = () => { // Destructure firebase from props
                 variant="outlined"
               />
             )}
-
-            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
-              Sign Up
-            </Button>
+            {role != "" && (
+              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
+                Sign Up
+              </Button>
+              )
+            }
+ 
             
           </form>
           
