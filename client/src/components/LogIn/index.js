@@ -1,6 +1,6 @@
 import React, { useState, useContext} from 'react';
 
-import { Grid, TextField, Button, Container, Typography, Box, createTheme, ThemeProvider} from '@mui/material';
+import { Select, MenuItem,Grid, TextField, Button, Container, Typography, Box, createTheme, ThemeProvider} from '@mui/material';
 import NavBar from '../Navigation';
 import { withFirebase } from '../Firebase'; // Import Firebase context and HOC
 import Firebase from '../Firebase'
@@ -9,11 +9,19 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { AuthContext } from '../Firebase/authContext';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { useDispatch } from 'react-redux';
+import { login, selectUserData } from '../../redux/reducers/userSlice';
+
+
+const serverURL = "";
 
 const LogIn = () => {
-  const { currentUser } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
- 
+  const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [registeredUser, setRegisteredUser] = useState(false);
+
   const handleLoginSuccess = (response) => {
     // Handle successful login
     console.log('Login Success:', response);
@@ -24,21 +32,10 @@ const LogIn = () => {
     console.error('Login Failed:', error);
   };
 
-  
-  // Function to check if user exists in Realtime Database
-  const checkIfEmailExists = async (email) => {
-    try {
-      const firestore = getFirestore(); // Get Firestore instance
-      const usersCollectionRef = collection(firestore, 'users'); // Reference to 'users' collection
-      const emailQuery = query(usersCollectionRef, where('email', '==', email)); // Query for documents with matching email
-      const querySnapshot = await getDocs(emailQuery); // Get query snapshot
-      console.log(querySnapshot)
-      return !querySnapshot.empty; // Return true if documents with matching email exist, false otherwise
-    } catch (error) {
-      console.error('Error checking if email exists:', error);
-      throw error; // Propagate the error
-    }
+  const handleChange = (e) => {
+    setRole(e.target.value);
   };
+
 
   const handleGoogleLogin = async () => {
     try {
@@ -46,29 +43,10 @@ const LogIn = () => {
       const result = await signInWithPopup(Firebase.auth, provider); // Sign in with Google popup      
       const user = result.user;
   
-      const userExists = await checkIfEmailExists(user.email); // Replace this with your own implementation
-  
-      if (!userExists) {
-        // If the user does not exist, return an error
-        console.log("dont exist")
-        throw new Error('User does not exist in the database');
-      }
-  
-      // Continue with login process
-      // Get the current user's ID token
-      const idToken = await user.getIdToken();
-      console.log('Encoded Token:', idToken);
-  
+      const idToken = await user.getIdToken();  
       const uid = user.uid;
-      const email = user.email;
+      setEmail(user.email);
       const providerId = user.providerId;
-  
-      console.log('User Info:');
-      console.log('UID:', uid);
-      console.log('Email:', email);
-      console.log('Provider ID:', providerId);
-  
-      // Continue with any other actions after successful login
       handleLoginSuccess(result);
     } catch (error) {
       console.error('Google login failed:', error);
@@ -76,6 +54,57 @@ const LogIn = () => {
       handleLoginFailure(error);
     }
   };
+
+  //Store login info in Redux
+  const handleLogin = (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
+    console.log(email);
+    loadUser();
+  };
+
+
+
+  const loadUser = () => {
+    callretrieveUser()
+      .then(res => {
+        console.log("callretrieveUser returned: ", res)
+        if (!res || !res.express || !Array.isArray(res.express) || res.express.length === 0) {
+          console.error("Empty or invalid response from server");
+          // Handle the error or return early if necessary
+          return;
+        }
+
+        var parsed = JSON.parse(res.express);
+        console.log("callretrieveUser parsed: ", parsed[0]);
+        
+        const userData = {
+          name: parsed[0].Name,
+          email: parsed[0].Email,
+          roles: role, 
+        };
+
+        dispatch(login(userData));
+      })
+  }
+
+  const callretrieveUser = async () => {
+    const url = serverURL + "/api/retrieveUser";
+    console.log(url);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({email: email, role: role})
+
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log("User settings: ", body);
+    return body;
+  };
+
   
   return (
     
@@ -86,12 +115,41 @@ const LogIn = () => {
           <Typography margin="normal" component="h1" variant="h5" color='#000'>
             Log in
           </Typography>
-          {currentUser ? (
-              <Typography className="user-name">{currentUser.displayName}</Typography>
-            ) : (
-              <Typography className="login-link">No User</Typography>
+
+
+          <Button style = {{margin: '20px'}}variant="contained" onClick={handleGoogleLogin}>Log In With Google</Button>
+          
+          {email && (
+              <Typography className="user-name">Current log In: {email}</Typography>
             )}
-          <Button variant="contained" onClick={handleGoogleLogin}>Log In With Google</Button>
+
+          <form onSubmit={handleLogin}  style={{ marginTop: '20px', width: '60%' }}>
+             <Select
+              margin="normal"
+              fullWidth
+              value={role}
+              onChange={handleChange}
+              displayEmpty
+              variant="outlined"
+              name="role"
+              id="role"
+            >
+              <MenuItem value="" disabled>
+                Select Role
+              </MenuItem>
+              <MenuItem value="student">Student</MenuItem>
+              <MenuItem value="teacher">Teacher</MenuItem>
+            </Select>
+            {role != "" && (
+              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
+                Sign In
+              </Button>
+              )
+            }
+ 
+            
+          </form>
+
         </Box>
       </Container>
 

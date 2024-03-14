@@ -5,13 +5,19 @@ import {Settings, Logout} from '@mui/icons-material';
 
 import {useNavigate} from 'react-router-dom';
 import { AuthContext } from '../Firebase/authContext';
+import Firebase from '../Firebase'
+
+import { login, selectUserData } from '../../redux/reducers/userSlice';
+import store from '../../redux/store'; // Import the Redux store
+import { useSelector } from 'react-redux';
 
 // import MenuIcon from '@mui/icons-material/Menu';
 
 export default function NavBar() {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
-  
+  const user = useSelector(selectUserData);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -20,8 +26,9 @@ export default function NavBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleSignOut = () => {
-    // Implement your sign out logic here
+    Firebase.doSignOut();
   };
 
   return (
@@ -98,7 +105,7 @@ export default function NavBar() {
             </Link>
           </Button>
           <div className="user-info">
-          {currentUser ? (
+          {user.loggedIn && (
             <>
               <img
                 src={currentUser.photoURL}
@@ -159,7 +166,7 @@ export default function NavBar() {
                   </ListItemIcon>
                   Settings
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleSignOut}>
                   <ListItemIcon>
                     <Logout fontsize="small"/>
                   </ListItemIcon>
@@ -167,8 +174,6 @@ export default function NavBar() {
                 </MenuItem>
               </Menu>
             </>
-          ) : (
-            <Typography className="login-link">Login</Typography>
           )}
     </div>
 

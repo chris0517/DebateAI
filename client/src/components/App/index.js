@@ -14,7 +14,6 @@ import { AuthProvider } from '../Firebase/authContext';
 const App = () => {
   return (
     <AuthProvider>
-
       <FirebaseContext.Provider value={Firebase}>
       <div>
         <Grid>
