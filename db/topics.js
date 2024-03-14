@@ -21,4 +21,21 @@ router.post("/getTopics", (req, res) => {
   connection.end();
 });
 
+router.post("/addTopic", (req, res) => {
+  let connection = mysql.createConnection(config);
+
+  const { name } = req.body;
+  let sql = `INSERT INTO Topics (Name) VALUES (?)`;
+  let data = [name];
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.error("Error adding topic:", error.message);
+      return res.status(500).json({ error: "Error adding topic: " + error.message });
+    }
+
+    return res.status(200).json({ success: true });
+  });
+  connection.end();
+});
+
 export default router;
