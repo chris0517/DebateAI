@@ -12,7 +12,7 @@ const Chat = () => {
   const [inputValue, setInputValue] = useState('');
   let {topic} = useParams();
 
-  useEffect(async () => {
+  useEffect(() => {
     //need to make a call to the db to get the topic from topic id
     //call API get DB topic
     const userMessage = {
