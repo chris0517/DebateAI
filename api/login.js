@@ -10,9 +10,9 @@ router.post("/retrieveUser", (req, res) => {
   const { email, role } = req.body;
   let sql = ``;
   let data = [email];
-  if (role === "student") {
+  if (role === "Student") {
     sql = "SELECT * From Student Where Email = ?";
-  } else if (role === "teacher") {
+  } else if (role === "Teacher") {
     sql = "SELECT * From Student Where Email = ?";
   }
   connection.query(sql, data, (error, results, fields) => {

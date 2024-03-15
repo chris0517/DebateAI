@@ -21,7 +21,9 @@ const SignUp = () => { // Destructure firebase from props
       const result = await signInWithPopup(Firebase.auth, provider); // Sign in with Google popup      const user = result.user;
       //setUserData.name(result.user.name);
       //setUserData.email(result.user.email);
+      
       setUserData({ name: result.user.displayName, email: result.user.email});
+      setSuccess(true);
       console.log(result.user);
       console.log(userData.name);
     } catch (error) {
@@ -95,14 +97,16 @@ const SignUp = () => { // Destructure firebase from props
   return (
     <div style = {{padding: '20px'}}>
       <NavBar />
-      <Container maxWidth="xs">
-        <Box sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography variant='h4' style={{ padding: '20px' }}>Sign up with Google</Typography>
+       <Container maxWidth="xs">
+        <Box sx={{ marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography variant='h4' >  Sign up</Typography>
 
-          <Button variant="contained" onClick={handleGoogleLogin}>Sign Up With Google</Button>
-          <form onSubmit={handleSubmit}  style={{ marginTop: '20px', width: '60%' }}>
+          <Button variant="contained" style={{ margin: '10px' }} onClick={handleGoogleLogin}>Sign Up With Google</Button>
+          {success && (
+              <Typography style = {{margin: '10px'}} className="user-name">Email Authenticated: {userData.email}</Typography>
+            )}
+          <form onSubmit={handleSubmit}  style={{ marginTop: '10px', width: '60%' }}>
              <Select
-              margin="normal"
               fullWidth
               value={role}
               onChange={handleChange}
@@ -139,21 +143,7 @@ const SignUp = () => { // Destructure firebase from props
           </form>
           
           
-          {success && (
-              <Box sx={{ marginTop: 2 }}>
-                <Typography variant>Successfully signed in as:</Typography>
-                <Typography variant="subtitle1">Name:  {userData.given_name} {userData.family_name} </Typography>
-                <Typography variant="subtitle1">Email: {userData.email}</Typography>
-                {display && (
-                  <Box sx={{ marginTop: 0}}>
-                    <Typography variant="subtitle1">Role: {role}</Typography>
-                    {role === 'student' && (
-                      <Typography variant="subtitle1">Student Number: {studentNum}</Typography>
-                    )}
-                  </Box>
-                )}
-            </Box>
-          )}
+
         
         </Box>
       </Container>
