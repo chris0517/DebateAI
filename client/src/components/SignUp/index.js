@@ -6,7 +6,6 @@ import Firebase from '../Firebase'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 const serverURL = '';
 
-
 const SignUp = () => { // Destructure firebase from props
     const [userData, setUserData] = useState({});
     const [role, setRole] = useState("");
@@ -50,7 +49,7 @@ const SignUp = () => { // Destructure firebase from props
         role: role,
         studentNum: studentNum
       };
-
+      console.log(userInfo)
       callApiAddUser(userInfo)
           .then(res => {
             console.log('callApiAddUser response: ', res);
@@ -81,15 +80,14 @@ const SignUp = () => { // Destructure firebase from props
         if (response.status !== 200) {
           throw Error(body.error); // Throw the error received from the API
         }
+        alert("Success");
         return body;
       } catch (error) {
         // Check if the error message indicates a duplicate entry error
-        if (error.message.includes("ER_DUP_ENTRY")) {
+        if (error.message) {
           // Display error message on the webpage
           alert("Error: This email is already registered.");
-        } else {
-          // For other errors, display the error message received from the API
-          alert(error.message);
+          Firebase.doSignOut();
         }
       }
 
@@ -118,10 +116,10 @@ const SignUp = () => { // Destructure firebase from props
               <MenuItem value="" disabled>
                 Select Role
               </MenuItem>
-              <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="teacher">Teacher</MenuItem>
+              <MenuItem value="Student">Student</MenuItem>
+              <MenuItem value="Teacher">Teacher</MenuItem>
             </Select>
-            {role === 'student' && (
+            {role === 'Student' && (
               <TextField
                 margin="normal"
                 fullWidth

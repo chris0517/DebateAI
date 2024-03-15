@@ -4,10 +4,13 @@ import { Button, TextField, Container, Grid, Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { selectUserData } from '../../redux/reducers/userSlice';
 import { v4 as uuidv4 } from 'uuid';
+import {useNavigate} from 'react-router-dom';
 
 import NavBar from '../Navigation';
 
 const Classroom = () => {
+  const navigate = useNavigate();
+
   const user = useSelector(selectUserData);
   const [classCode, setClassCode] = useState('');
   const [studentID, setStudentID] = useState('');
@@ -69,6 +72,7 @@ const Classroom = () => {
       return(
         <div>
           <Typography>Please Log in first</Typography>
+          <Button id="navigate" onClick={() => navigate('/login')}>Go to Login</Button>
         </div>
       )
     }
