@@ -118,10 +118,10 @@ const SignUp = () => { // Destructure firebase from props
               <MenuItem value="" disabled>
                 Select Role
               </MenuItem>
-              <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="teacher">Teacher</MenuItem>
+              <MenuItem value="Student">Student</MenuItem>
+              <MenuItem value="Teacher">Teacher</MenuItem>
             </Select>
-            {role === 'student' && (
+            {role === 'Student' && (
               <TextField
                 margin="normal"
                 fullWidth

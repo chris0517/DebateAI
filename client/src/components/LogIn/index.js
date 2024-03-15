@@ -76,6 +76,8 @@ const LogIn = () => {
         if (parsed.length === 0) {
           console.error("Empty or invalid response from server");
           setErrorMessage("Email not found, please sign up first");
+          Firebase.doSignOut();
+
           return;
         }else (
           setErrorMessage("")
@@ -127,7 +129,7 @@ const LogIn = () => {
           </Typography>
 
 
-          <Button style = {{margin: '10px'}}variant="contained" onClick={handleGoogleLogin}>Log In With Google</Button>
+          <Button style={{margin: '10px'}} id="login" variant="contained" onClick={handleGoogleLogin} >Log In With Google</Button>
           
           {email && (
               <Typography style = {{margin: '10px'}} className="user-name">Email Authenticated: {email}</Typography>
