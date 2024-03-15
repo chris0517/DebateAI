@@ -5,6 +5,7 @@ import NavBar from '../Navigation';
 import { withFirebase } from '../Firebase'; // Import Firebase context and HOC
 import Firebase from '../Firebase'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import {useNavigate} from 'react-router-dom';
 
 import { AuthContext } from '../Firebase/authContext';
 import { getAuth } from 'firebase/auth';
@@ -16,11 +17,12 @@ import { login, selectUserData } from '../../redux/reducers/userSlice';
 const serverURL = "";
 
 const LogIn = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
-  const [registeredUser, setRegisteredUser] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLoginSuccess = (response) => {
     // Handle successful login
@@ -59,7 +61,8 @@ const LogIn = () => {
   const handleLogin = (event) => {
     event.preventDefault(); // Prevent default form submission behavior
     console.log(email);
-    loadUser();
+    loadUser(); // Wait for loadUser() to finish before proceeding
+
   };
 
 
@@ -68,22 +71,29 @@ const LogIn = () => {
     callretrieveUser()
       .then(res => {
         console.log("callretrieveUser returned: ", res)
-        if (!res || !res.express || !Array.isArray(res.express) || res.express.length === 0) {
-          console.error("Empty or invalid response from server");
-          // Handle the error or return early if necessary
-          return;
-        }
-
         var parsed = JSON.parse(res.express);
-        console.log("callretrieveUser parsed: ", parsed[0]);
+        console.log("callretrieveUser parsed: ", parsed);
+        if (parsed.length === 0) {
+          console.error("Empty or invalid response from server");
+          setErrorMessage("Email not found, please sign up first");
+          return;
+        }else (
+          setErrorMessage("")
+        )
         
         const userData = {
           name: parsed[0].Name,
           email: parsed[0].Email,
+          number: parsed[0].StudentNumber,
           roles: role, 
         };
 
-        dispatch(login(userData));
+        dispatch(login(userData)).then(() => {
+          if (errorMessage === "") {
+            navigate('/profile');
+          }
+        }
+        );
       })
   }
 
@@ -111,19 +121,19 @@ const LogIn = () => {
     <div style = {{padding: '20px'}}>
       <NavBar />
        <Container maxWidth="xs">
-        <Box sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography margin="normal" component="h1" variant="h5" color='#000'>
+        <Box sx={{ marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography variant='h4' >            
             Log in
           </Typography>
 
 
-          <Button style = {{margin: '20px'}}variant="contained" onClick={handleGoogleLogin}>Log In With Google</Button>
+          <Button style = {{margin: '10px'}}variant="contained" onClick={handleGoogleLogin}>Log In With Google</Button>
           
           {email && (
-              <Typography className="user-name">Current log In: {email}</Typography>
+              <Typography style = {{margin: '10px'}} className="user-name">Email Authenticated: {email}</Typography>
             )}
 
-          <form onSubmit={handleLogin}  style={{ marginTop: '20px', width: '60%' }}>
+          <form onSubmit={handleLogin}  style={{ margin: '10px', width: '60%' }}>
              <Select
               margin="normal"
               fullWidth
@@ -137,18 +147,23 @@ const LogIn = () => {
               <MenuItem value="" disabled>
                 Select Role
               </MenuItem>
-              <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="teacher">Teacher</MenuItem>
+              <MenuItem value="Student">Student</MenuItem>
+              <MenuItem value="Teacher">Teacher</MenuItem>
             </Select>
             {role != "" && (
               <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
                 Sign In
               </Button>
               )
-            }
- 
-            
+            }            
           </form>
+
+          {errorMessage && 
+            <div>
+              <Typography style={{ color: 'red' }}>{errorMessage}</Typography>
+              <Button></Button>
+            </div>
+            }
 
         </Box>
       </Container>

@@ -6,6 +6,8 @@ import LogIn from '../LogIn';
 import Classroom from '../Classroom';
 import SignUp from '../SignUp';
 import Chat from '../Chat';
+import Profile from '../Profile';
+
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Firebase, {FirebaseContext} from '../Firebase'
 import { AuthProvider } from '../Firebase/authContext';
@@ -25,7 +27,7 @@ const App = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/classroom" element={<Classroom />} />
                 <Route path="/chat/:topic" element={<Chat />} />
-                <Route path="/user" element={<Chat />} />
+                <Route path="/profile" element={<Profile />} />
 
               </Routes>
             </Router>

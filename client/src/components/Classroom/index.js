@@ -1,33 +1,88 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import {createTheme, ThemeProvider, styled} from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
-import NavBar from '../Navigation';
-import { login, selectUserData } from '../../redux/reducers/userSlice';
-import store from '../../redux/store'; // Import the Redux store
+import { Button, TextField, Container, Grid, Box } from '@mui/material';
 import { useSelector } from 'react-redux';
-//import BackgroundImage from "./backgroundImage.jpg"
+import { selectUserData } from '../../redux/reducers/userSlice';
+import { v4 as uuidv4 } from 'uuid';
 
-const serverURL = '';
-
-const opacityValue = 0.9;
+import NavBar from '../Navigation';
 
 const Classroom = () => {
   const user = useSelector(selectUserData);
+  const [classCode, setClassCode] = useState('');
+  const [studentID, setStudentID] = useState('');
+  const [classroomID, setClassroomID] = useState('');
 
+  const handleCreateClassroom = () => {
+    const newClassCode = uuidv4().substr(0, 8);
+    setClassCode(newClassCode);
+  };
+
+  const handleJoinClassroom = () => {
+    // Additional logic to handle joining classroom
+  };
+
+  const renderContentBasedOnRoles = () => {
+    if (user.roles === 'Teacher') {
+      return (
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item>
+            <Button padding={2} variant="contained" onClick={handleCreateClassroom}>Create Classroom</Button>
+          </Grid>
+          <Grid item>
+            {classCode && (
+              <Typography variant="body1">Class Code: {classCode}</Typography>
+            )}
+          </Grid>
+        </Grid>
+      );
+    } else if (user.roles === 'Student') {
+      return (
+        <Grid   
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center">
+          <Grid item xs={12} paddingBottom={2}>
+            <TextField
+              label="Student ID"
+              value={studentID}
+              onChange={(e) => setStudentID(e.target.value)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} paddingBottom={2}>
+            <TextField
+              label="Classroom ID"
+              value={classroomID}
+              onChange={(e) => setClassroomID(e.target.value)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} paddingBottom={2}>
+            <Button variant="contained" onClick={handleJoinClassroom} fullWidth>Join Classroom</Button>
+          </Grid>
+        </Grid>
+      );
+    } else {
+      // Default case or additional conditions
+      return(
+        <div>
+          <Typography>Please Log in first</Typography>
+        </div>
+      )
+    }
+  };
+  
+  // Render the content based on user's roles
   return (
-    <div style={{padding: '20px'}}>
+    <div style={{ padding: '20px' }}>
       <NavBar />
-      <Grid container spacing={3} padding={3}>
-        <Typography color="#000">Classroom Page</Typography>
-      </Grid>
-      <div>
-            {/* Render user data */}
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
-            <p>Student Number: {user.studentNumber}</p>
-            <p>Roles: {user.roles}</p>
-          </div>
+      <Container maxWidth="xs">
+        <Box mb={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {renderContentBasedOnRoles()}
+        </Box>
+      </Container>
     </div>
   );
 };
