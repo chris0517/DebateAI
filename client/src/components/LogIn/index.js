@@ -90,12 +90,12 @@ const LogIn = () => {
           roles: role, 
         };
 
-        dispatch(login(userData)).then(() => {
-          if (errorMessage === "") {
+        dispatch(login(userData))
+        if (errorMessage === "") {
             navigate('/profile');
-          }
         }
-        );
+        
+        
       })
   }
 

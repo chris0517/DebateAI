@@ -10,10 +10,10 @@ router.post("/addUser", (req, res) => {
   const { name, email, studentNum, role } = req.body;
   let sql = ``;
   let data = [];
-  if (role === "student") {
+  if (role === "Student") {
     sql = "INSERT INTO Student (Name, Email, StudentNumber) VALUES (?, ?, ?)";
     data = [name, email, studentNum];
-  } else if (role === "teacher") {
+  } else if (role === "Teacher") {
     sql = "INSERT INTO Teacher (Name, Email) VALUES (?, ?)";
     data = [name, email];
   }
