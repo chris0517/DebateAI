@@ -86,6 +86,7 @@ const Classroom = () => {
         <Box mb={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {renderContentBasedOnRoles()}
         </Box>
+        <Typography>{localStorage.getItem("currentUserID")}</Typography>
       </Container>
     </div>
   );

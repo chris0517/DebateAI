@@ -46,7 +46,10 @@ const LogIn = () => {
       const user = result.user;
   
       const idToken = await user.getIdToken();  
+      console.log("idToken:", idToken)
       const uid = user.uid;
+      localStorage.setItem("currentUserID", uid);
+
       setEmail(user.email);
       const providerId = user.providerId;
       handleLoginSuccess(result);
