@@ -47,8 +47,16 @@ const LogIn = () => {
   
       const idToken = await user.getIdToken();  
       console.log("idToken:", idToken)
-      const uid = user.uid;
-      localStorage.setItem("currentUserID", uid);
+      Firebase.doGetIdToken()
+      .then((idToken) => {
+        localStorage.setItem("currentUserID", idToken);
+        console.log("User ID stored in localStorage:", idToken);
+      })
+      .catch((error) => {
+        console.error("Error getting ID token:", error);
+      });
+
+      console.log("dogetID result", localStorage.getItem("currentUserID"))
 
       setEmail(user.email);
       const providerId = user.providerId;
@@ -64,6 +72,7 @@ const LogIn = () => {
   const handleLogin = (event) => {
     event.preventDefault(); // Prevent default form submission behavior
     console.log(email);
+    console.log(localStorage.getItem("currentUserID"))
     loadUser(); // Wait for loadUser() to finish before proceeding
 
   };

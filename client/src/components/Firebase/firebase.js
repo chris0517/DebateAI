@@ -35,14 +35,24 @@ class Firebase {
 
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 
-  doGetIdToken = bool => {
-    const idToken = this.auth.currentUser.getIdToken(/* forceRefresh */ bool)
-    return   this.auth.verifyIdToken(idToken)
-    ;
-  };
 
   doGetUserByEmail = email => this.auth.getUserByEmail(email)
 
+  doGetIdToken = () => {
+    return new Promise((resolve, reject) => {
+    const user = this.auth.currentUser;
+    if (user) {
+      user.getIdToken().then(token => {
+        resolve(token);
+      }).catch(error => {
+      reject(error);
+    });
+    } else {
+      reject(new Error('No user is signed in.'));
+    }
+    })
+  }
+    
 
 }
 
