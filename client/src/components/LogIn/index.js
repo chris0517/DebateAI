@@ -45,18 +45,13 @@ const LogIn = () => {
       const result = await signInWithPopup(Firebase.auth, provider); // Sign in with Google popup      
       const user = result.user;
   
-      const idToken = await user.getIdToken();  
-      console.log("idToken:", idToken)
-      Firebase.doGetIdToken()
-      .then((idToken) => {
-        localStorage.setItem("currentUserID", idToken);
-        console.log("User ID stored in localStorage:", idToken);
-      })
-      .catch((error) => {
-        console.error("Error getting ID token:", error);
-      });
 
-      console.log("dogetID result", localStorage.getItem("currentUserID"))
+      let idToken = "";
+      const userIDToken = await Firebase.doGetIdToken();
+
+      localStorage.setItem("currentUserID", userIDToken);
+
+      console.log("Currently stored in localstorage", localStorage.getItem("currentUserID"))
 
       setEmail(user.email);
       const providerId = user.providerId;
