@@ -4,7 +4,7 @@ import config from "../config.js";
 
 const router = express.Router();
 
-// API to add a review to the database
+// API to get a topics to the database
 router.post("/getTopics", (req, res) => {
   let connection = mysql.createConnection(config);
 

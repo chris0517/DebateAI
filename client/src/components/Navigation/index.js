@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom';
 import { AuthContext } from '../Firebase/authContext';
 import Firebase from '../Firebase'
 
-import { login, selectUserData } from '../../redux/reducers/userSlice';
+import { login, selectUserData, logout } from '../../redux/reducers/userSlice';
 import store from '../../redux/store'; // Import the Redux store
 import { useSelector } from 'react-redux';
 import { current } from '@reduxjs/toolkit';
@@ -44,7 +44,7 @@ export default function NavBar() {
       roles: "", 
     };
 
-    dispatch(login(userData));
+    dispatch(logout());
   };
   const handleProfile = () => {
     navigate('/profile');
