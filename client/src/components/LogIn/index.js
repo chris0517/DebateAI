@@ -94,7 +94,7 @@ const LogIn = () => {
           name: parsed[0].Name,
           email: parsed[0].Email,
           number: parsed[0].StudentNumber,
-          roles: role, 
+          roles: parsed[0].Role, 
           classroomID: parsed[0].ClassroomID,
         };
 
@@ -144,28 +144,9 @@ const LogIn = () => {
             )}
 
           <form onSubmit={handleLogin}  style={{ margin: '10px', width: '60%' }}>
-             <Select
-              margin="normal"
-              fullWidth
-              value={role}
-              onChange={handleChange}
-              displayEmpty
-              variant="outlined"
-              name="role"
-              id="role"
-            >
-              <MenuItem value="" disabled>
-                Select Role
-              </MenuItem>
-              <MenuItem value="Student">Student</MenuItem>
-              <MenuItem value="Teacher">Teacher</MenuItem>
-            </Select>
-            {role != "" && (
-              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
-                Sign In
-              </Button>
-              )
-            }            
+            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
+              Sign In
+            </Button>
           </form>
 
           {errorMessage && 
