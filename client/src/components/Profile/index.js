@@ -37,8 +37,11 @@ const Profile = () => {
                 Student Number: {user.number}
               </Typography>
             )}
-            <Typography variant="body1" gutterBottom paddingLeft={2} paddingBottom={2}> 
+            <Typography variant="body1" gutterBottom paddingLeft={2}> 
               Roles: {user.roles}
+            </Typography>
+            <Typography variant="body1" gutterBottom paddingLeft={2} paddingBottom={2}> 
+              ClassroomID: {user.classroomID}
             </Typography>
           </Paper>
         </Grid>

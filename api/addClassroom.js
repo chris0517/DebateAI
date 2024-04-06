@@ -4,25 +4,26 @@ import config from "../config.js";
 
 const router = express.Router();
 
-router.post("/retrieveUser", (req, res) => {
+router.post("/addUser", (req, res) => {
   let connection = mysql.createConnection(config);
 
-  const { email, role } = req.body;
+  const { name, email, studentNum, role } = req.body;
   let sql = ``;
-  let data = [email];
+  let data = [];
   if (role === "Student") {
-    sql = "SELECT * From Student Where Email = ?";
+    sql = "INSERT INTO Student (Name, Email, StudentNumber) VALUES (?, ?, ?)";
+    data = [name, email, studentNum];
   } else if (role === "Teacher") {
-    sql = "SELECT * From Teacher Where Email = ?";
+    sql = "INSERT INTO Teacher (Name, Email) VALUES (?, ?)";
+    data = [name, email];
   }
   connection.query(sql, data, (error, results, fields) => {
     if (error) {
-      console.error("Error retrieving user:", error.message);
+      console.error("Error adding user:", error.message);
       return res.status(500).json({ error: "Error adding user: " + error.message });
     }
 
-    let string = JSON.stringify(results);
-    res.send({ express: string });
+    return res.status(200).json({ success: true });
   });
   connection.end();
 });

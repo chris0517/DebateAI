@@ -95,6 +95,7 @@ const LogIn = () => {
           email: parsed[0].Email,
           number: parsed[0].StudentNumber,
           roles: role, 
+          classroomID: parsed[0].ClassroomID,
         };
 
         dispatch(login(userData))
