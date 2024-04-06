@@ -8,6 +8,7 @@ const initialState = {
   email: '',
   number: '',
   roles: [],
+  classroomID: '',
 };
 
 const userSlice = createSlice({
@@ -15,12 +16,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login(state, action) {
-      const { name, email, number, roles } = action.payload;
+      const { name, email, number, roles, classroomID} = action.payload;
       state.loggedIn = true;
       state.name = name;
       state.email = email;
       state.number = number;
       state.roles = roles;
+      state.classroomID = classroomID;
     },
     logout(state) {
       state.loggedIn = false;
@@ -28,6 +30,8 @@ const userSlice = createSlice({
       state.email = '';
       state.number = '';
       state.roles = [];
+      state.classroomID = '';
+
     },
   },
 });

@@ -8,17 +8,15 @@ router.post("/addUser", (req, res) => {
   let connection = mysql.createConnection(config);
 
   const { name, email, studentNum, role } = req.body;
-  let sql = `INSERT INTO User (Name, Email, StudentNumber, Role) VALUES (?, ?, ?,?)`;
-  let data = [name, email, studentNum, role];
-
-  // if (role === "Student") {
-  //   sql = "INSERT INTO Student (Name, Email, StudentNumber) VALUES (?, ?, ?)";
-  //   data = [name, email, studentNum];
-  // } else if (role === "Teacher") {
-  //   sql = "INSERT INTO Teacher (Name, Email) VALUES (?, ?)";
-  //   data = [name, email];
-  // }
-
+  let sql = ``;
+  let data = [];
+  if (role === "Student") {
+    sql = "INSERT INTO Student (Name, Email, StudentNumber) VALUES (?, ?, ?)";
+    data = [name, email, studentNum];
+  } else if (role === "Teacher") {
+    sql = "INSERT INTO Teacher (Name, Email) VALUES (?, ?)";
+    data = [name, email];
+  }
   connection.query(sql, data, (error, results, fields) => {
     if (error) {
       console.error("Error adding user:", error.message);

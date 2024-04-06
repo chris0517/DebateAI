@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 import { selectUserData } from '../../redux/reducers/userSlice';
 import { v4 as uuidv4 } from 'uuid';
 import {useNavigate} from 'react-router-dom';
-
+import TeacherContent from './teacher';
+import StudentContent from './student';
 import NavBar from '../Navigation';
 
 const Classroom = () => {
@@ -17,7 +18,9 @@ const Classroom = () => {
   const [classroomID, setClassroomID] = useState('');
 
   const handleCreateClassroom = () => {
-    const newClassCode = uuidv4().substr(0, 8);
+    const min = 100000;
+    const max = 999999;
+    const newClassCode = Math.floor(Math.random() * (max - min + 1)) + min;
     setClassCode(newClassCode);
   };
 
@@ -28,53 +31,30 @@ const Classroom = () => {
   const renderContentBasedOnRoles = () => {
     if (user.roles === 'Teacher') {
       return (
-        <Grid container spacing={2} justifyContent="center">
-          <Grid item>
-            <Button padding={2} variant="contained" onClick={handleCreateClassroom}>Create Classroom</Button>
-          </Grid>
-          <Grid item>
-            {classCode && (
-              <Typography variant="body1">Class Code: {classCode}</Typography>
-            )}
-          </Grid>
-        </Grid>
+        <TeacherContent
+          classCode={classCode}
+          setClassCode={setClassCode}
+          handleCreateClassroom={handleCreateClassroom}
+        />
       );
     } else if (user.roles === 'Student') {
       return (
-        <Grid   
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center">
-          <Grid item xs={12} paddingBottom={2}>
-            <TextField
-              label="Student ID"
-              value={studentID}
-              onChange={(e) => setStudentID(e.target.value)}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12} paddingBottom={2}>
-            <TextField
-              label="Classroom ID"
-              value={classroomID}
-              onChange={(e) => setClassroomID(e.target.value)}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12} paddingBottom={2}>
-            <Button variant="contained" onClick={handleJoinClassroom} fullWidth>Join Classroom</Button>
-          </Grid>
-        </Grid>
+        <StudentContent
+          studentID={studentID}
+          setStudentID={setStudentID}
+          classroomID={classroomID}
+          setClassroomID={setClassroomID}
+          handleJoinClassroom={handleJoinClassroom}
+        />
       );
     } else {
       // Default case or additional conditions
-      return(
+      return (
         <div>
           <Typography>Please Log in first</Typography>
           <Button id="navigate" onClick={() => navigate('/login')}>Go to Login</Button>
         </div>
-      )
+      );
     }
   };
   
