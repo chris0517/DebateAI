@@ -1,6 +1,6 @@
 // userSlice.js
-import { createSlice } from '@reduxjs/toolkit';
-import { createSelector } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
+import {createSelector} from '@reduxjs/toolkit';
 
 const initialState = {
   loggedIn: false,
@@ -16,7 +16,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login(state, action) {
-      const { name, email, number, roles, classroomID} = action.payload;
+      const {name, email, number, roles, classroomID} = action.payload;
       state.loggedIn = true;
       state.name = name;
       state.email = email;
@@ -34,18 +34,20 @@ const userSlice = createSlice({
     },
     updateClassroomID(state, action) {
       state.classroomID = action.payload.classroomID;
+
     },
   },
 });
 // Select the user slice from the state
-const selectUser = (state) => state.user;
+const selectUser = state => state.user;
 
 // Create a selector to get the user data
 export const selectUserData = createSelector(
   selectUser,
-  (user) => user // Return the entire user slice
+  user => user, // Return the entire user slice
 );
 
 export const { login, logout, updateClassroomID} = userSlice.actions;
+
 
 export default userSlice.reducer;
