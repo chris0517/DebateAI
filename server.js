@@ -9,9 +9,16 @@ import Topics from "./db/topics.js";
 import SignUp from "./api/signup.js";
 import LogIn from "./api/login.js";
 import Student from "./db/student.js";
-
+import admin from "firebase-admin";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+import serviceAccount from "./serviceAccountKey.json" assert { type: "json" };
+import { checkAuth } from "./middleware.js";
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -24,10 +31,11 @@ app.use("/api", Topics);
 
 app.use("/api", Student);
 //all OpenAI routes
-app.use("/api", OpenAI);
 //Send user info to sql
 app.use("/api", SignUp);
 //retrieve user info after login
 app.use("/api", LogIn);
+
+app.use("/api", [checkAuth, OpenAI]);
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version

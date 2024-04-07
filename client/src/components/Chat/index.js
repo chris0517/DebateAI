@@ -55,15 +55,22 @@ const Chat = () => {
   };
 
   const handleSendMessageToAI = async messages => {
+    let userToken = localStorage.getItem('userToken');
     const url = serverURL + '/api/chatCompletion';
     // Send messages to API
+    console.log(userToken);
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: userToken,
       },
       body: JSON.stringify({messages}),
     });
+    console.log(response);
+    if (response.statusText === 'Unauthorized') {
+      window.location.href = '/login';
+    }
     const data = await response.json();
     console.log(data);
     setOpenAIMessages(messages => [
