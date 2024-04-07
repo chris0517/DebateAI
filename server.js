@@ -11,7 +11,7 @@ import LogIn from "./api/login.js";
 import Student from "./db/student.js";
 import Classroom from "./api/addClassroom.js"
 import StudentList from "./api/studentList.js"
-import classroomInfo from "./api/classroomInfo.js"
+import ClassroomInfo from "./api/classroomInfo.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,7 +37,7 @@ app.use("/api", Classroom);
 //retrieve student list
 app.use("/api", StudentList)
 //add classroom to Student
-app.use("/api", classroomInfo)
+app.use("/api", ClassroomInfo)
 
 
 

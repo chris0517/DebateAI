@@ -100,8 +100,6 @@ const LogIn = () => {
         if (errorMessage === "") {
             navigate('/profile');
         }
-        
-        
       })
   }
 
