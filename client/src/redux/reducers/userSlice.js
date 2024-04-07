@@ -31,7 +31,9 @@ const userSlice = createSlice({
       state.number = '';
       state.roles = [];
       state.classroomID = '';
-
+    },
+    updateClassroomID(state, action) {
+      state.classroomID = action.payload.classroomID;
     },
   },
 });
@@ -44,6 +46,6 @@ export const selectUserData = createSelector(
   (user) => user // Return the entire user slice
 );
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateClassroomID} = userSlice.actions;
 
 export default userSlice.reducer;
