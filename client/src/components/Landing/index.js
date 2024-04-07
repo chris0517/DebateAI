@@ -56,13 +56,10 @@ const DebateTopics = () => {
   console.log('topics: ', topics);
   const navigate = useNavigate();
   return (
-
     <div
-      style = {{padding: '20px'}}
+      style={{padding: '20px'}}
       className="min-h-screen border-2 p-3 overflow-hidden"
-      style={{backgroundAttachment: 'fixed'}}
     >
-
       <NavBar />
 
       <div className="p-5">
