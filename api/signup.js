@@ -7,26 +7,24 @@ const router = express.Router();
 router.post("/addUser", (req, res) => {
   let connection = mysql.createConnection(config);
 
-  const { name, email, studentNum, role } = req.body;
-  let sql = `INSERT INTO User (Name, Email, StudentNumber, Role) VALUES (?, ?, ?,?)`;
-  let data = [name, email, studentNum, role];
+  const { name, email, studentNum, role, classCode } = req.body;
+  let sql = `INSERT INTO User (Name, Email, ClassroomID, Role, StudentNumber)
+  SELECT ?, ?, ?, ?, ?
+  FROM Classroom
+  WHERE ClassroomID = ?;`;
+  let data = [name, email,classCode, role, studentNum, classCode];
 
-  // if (role === "Student") {
-  //   sql = "INSERT INTO Student (Name, Email, StudentNumber) VALUES (?, ?, ?)";
-  //   data = [name, email, studentNum];
-  // } else if (role === "Teacher") {
-  //   sql = "INSERT INTO Teacher (Name, Email) VALUES (?, ?)";
-  //   data = [name, email];
-  // }
 
   connection.query(sql, data, (error, results, fields) => {
     if (error) {
       console.error("Error adding user:", error.message);
       return res.status(500).json({ error: "Error adding user: " + error.message });
     }
+    let string = JSON.stringify(results);
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({  express: string });
   });
+
   connection.end();
 });
 

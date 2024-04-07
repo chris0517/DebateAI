@@ -50,9 +50,6 @@ const LogIn = () => {
     console.error('Login Failed:', error);
   };
 
-  const handleChange = e => {
-    setRole(e.target.value);
-  };
 
   const handleGoogleLogin = async () => {
     try {
@@ -73,6 +70,7 @@ const LogIn = () => {
       setEmail(user.email);
       const providerId = user.providerId;
       handleLoginSuccess(result);
+      
     } catch (error) {
       console.error('Google login failed:', error);
       // Handle the error and return an error message to the user
@@ -117,7 +115,9 @@ const LogIn = () => {
   };
 
   const callretrieveUser = async () => {
-    const url = serverURL + '/api/retrieveUser';
+
+    const url = serverURL + "/api/login";
+
     console.log(url);
 
     const response = await fetch(url, {

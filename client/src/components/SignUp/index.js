@@ -12,7 +12,7 @@ const SignUp = () => { // Destructure firebase from props
     const [studentNum, setStudentNum] = useState(null);
     const [display, setDisplay] = useState(false);
     const [success, setSuccess] = useState(false);
-
+    const [classCode, setClassCode] = useState(null);
 
   const handleGoogleLogin = async () => {
     try {
@@ -33,7 +33,9 @@ const SignUp = () => { // Destructure firebase from props
     const handleStudnetNumberChange = (e) => {
       setStudentNum(e.target.value);
     };
-
+    const handleClassChange = (e) => {
+      setClassCode(e.target.value);
+    };
     const handleChange = (e) => {
       setRole(e.target.value);
     };
@@ -47,16 +49,23 @@ const SignUp = () => { // Destructure firebase from props
         name: userData.name,
         email: userData.email,
         role: role,
-        studentNum: studentNum
+        studentNum: studentNum,
+        classCode: classCode
       };
       console.log(userInfo)
       callApiAddUser(userInfo)
           .then(res => {
             console.log('callApiAddUser response: ', res);
+            var parsed = JSON.parse(res.express);
+            console.log(parsed)
+            if(parsed.affectedRows === 0){
+              alert("Classroom code not found, please enter a valid classroom code!")
+            }else{
+              alert("Sign Up Successful!");
+            }
           })
           .catch(error => {
             console.error('Error adding user:', error);
-
           });
     };
 
@@ -73,14 +82,13 @@ const SignUp = () => { // Destructure firebase from props
           },
           body: JSON.stringify(requestBody)
         });
-    
+
         const body = await response.json();
         console.log("body", body);
-    
+
         if (response.status !== 200) {
           throw Error(body.error); // Throw the error received from the API
         }
-        alert("Success");
         return body;
       } catch (error) {
         // Check if the error message indicates a duplicate entry error
@@ -120,6 +128,7 @@ const SignUp = () => { // Destructure firebase from props
               <MenuItem value="Teacher">Teacher</MenuItem>
             </Select>
             {role === 'Student' && (
+              <>
               <TextField
                 margin="normal"
                 fullWidth
@@ -129,6 +138,16 @@ const SignUp = () => { // Destructure firebase from props
                 onChange={handleStudnetNumberChange}
                 variant="outlined"
               />
+              <TextField
+                margin="normal"
+                fullWidth
+                id="classRoom"
+                label="Classroom Number"
+                name="classRoom Number"
+                onChange={handleClassChange}
+                variant="outlined"
+              />
+              </>
             )}
             {role != "" && (
               <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>

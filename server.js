@@ -9,6 +9,11 @@ import Topics from "./db/topics.js";
 import SignUp from "./api/signup.js";
 import LogIn from "./api/login.js";
 import Student from "./db/student.js";
+import Classroom from "./api/addClassroom.js"
+import StudentList from "./api/studentList.js"
+import classroomInfo from "./api/classroomInfo.js"
+
+
 import admin from "firebase-admin";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,6 +40,14 @@ app.use("/api", Student);
 app.use("/api", SignUp);
 //retrieve user info after login
 app.use("/api", LogIn);
+//add mew classroom
+app.use("/api", Classroom);
+//retrieve student list
+app.use("/api", StudentList)
+//add classroom to Student
+app.use("/api", classroomInfo)
+
+
 
 app.use("/api", [checkAuth, OpenAI]);
 
