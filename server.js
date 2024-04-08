@@ -9,12 +9,14 @@ import Topics from "./db/topics.js";
 import SignUp from "./api/signup.js";
 import LogIn from "./api/login.js";
 import Student from "./db/student.js";
-import Classroom from "./api/addClassroom.js"
-import StudentList from "./api/studentList.js"
-import ClassroomInfo from "./api/classroomInfo.js"
-import Assignment from "./api/addAssignment.js"
-import Status from "./api/assignmentStatus.js"
+import Classroom from "./api/addClassroom.js";
+import StudentList from "./api/studentList.js";
+import ClassroomInfo from "./api/classroomInfo.js";
+import Assignment from "./api/addAssignment.js";
+import Status from "./api/assignmentStatus.js";
 
+import DebateHistory from "./db/debateHistory.js";
+import ChatMessages from "./db/chatMessages.js";
 import admin from "firebase-admin";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,15 +46,18 @@ app.use("/api", LogIn);
 //add mew classroom
 app.use("/api", Classroom);
 //retrieve student list
-app.use("/api", StudentList)
+app.use("/api", StudentList);
 //add classroom to Student
-app.use("/api", ClassroomInfo)
+app.use("/api", ClassroomInfo);
 //add assignment
-app.use("/api", Assignment)
+app.use("/api", Assignment);
 //update assignment status
-app.use("/api", Status)
+app.use("/api", Status);
 
+app.use("/api", [checkAuth, DebateHistory]);
 
 app.use("/api", [checkAuth, OpenAI]);
+
+app.use("/api", [checkAuth, ChatMessages]);
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version

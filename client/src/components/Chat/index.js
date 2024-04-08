@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {system_prompt} from '../../constants';
-import {useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import NavBar from '../Navigation';
+import {useSelector} from 'react-redux';
+import {selectUserData} from '../../redux/reducers/userSlice';
+import {useNavigate} from 'react-router-dom';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -10,8 +13,11 @@ const Chat = () => {
   ]);
   const serverURL = '';
   const [inputValue, setInputValue] = useState('');
+  const [debateID, setDebateID] = useState(null);
   let {topic} = useParams();
-
+  let location = useLocation();
+  const navigate = useNavigate();
+  const user = useSelector(selectUserData);
   useEffect(() => {
     //need to make a call to the db to get the topic from topic id
     //call API get DB topic
@@ -23,12 +29,59 @@ const Chat = () => {
     setOpenAIMessages(messages => [...messages, userMessage]);
   }, []);
 
-  const callAPITopics = async () => {
-    return {
-      role: 'user',
-      content:
-        'Topic: We are debating whether iphones are better then androids',
-    };
+  useEffect(() => {
+    let topic_id = location.state.topic.topic_id;
+    console.log('YEEE');
+    console.log(topic_id);
+    console.log(user);
+    if (topic_id && user) {
+      console.log('UHHH');
+      insertDebate(topic_id);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    console.log(messages[messages.length - 1]);
+    if (debateID) {
+      insertChatMessage(messages[messages.length - 1]);
+    }
+  }, [messages]);
+
+  const insertChatMessage = async message => {
+    //create chat message api
+    const url = serverURL + '/api/insertChatMessage';
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('userToken'),
+      },
+      body: JSON.stringify({
+        debateID: debateID,
+        userID: user.id,
+        message: message.text,
+        sender: message.sender,
+        timestamp: Date.now(),
+      }),
+    });
+  };
+  const insertDebate = async topic_id => {
+    //create detbate api
+    const id = Date.now();
+    const url = serverURL + '/api/insertDebate';
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('userToken'),
+      },
+      body: JSON.stringify({
+        debateID: id,
+        topicID: topic_id,
+        userID: user.id,
+      }),
+    });
+    setDebateID(id);
   };
 
   const handleInputChange = e => {
@@ -58,7 +111,6 @@ const Chat = () => {
     let userToken = localStorage.getItem('userToken');
     const url = serverURL + '/api/chatCompletion';
     // Send messages to API
-    console.log(userToken);
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -67,7 +119,7 @@ const Chat = () => {
       },
       body: JSON.stringify({messages}),
     });
-    console.log(response);
+
     if (response.statusText === 'Unauthorized') {
       window.location.href = '/login';
     }
@@ -82,22 +134,6 @@ const Chat = () => {
     messages.push({role: 'ai', content: data.express});
   };
 
-  const callApiLoadMovies = async () => {
-    const url = serverURL + '/api/getMovies';
-    console.log(url);
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    console.log('User settings: ', body);
-    return body;
-  };
-
   const handleKeyPress = e => {
     if (e.key === 'Enter') {
       handleSendMessage();
@@ -106,6 +142,13 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-screen p-4 bg-gray-100">
+      {/* Back arrow/button */}
+      <button
+        onClick={() => navigate('/')}
+        className="mb-4 p-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+      >
+        ← Back
+      </button>
       <div className="flex flex-col flex-auto overflow-auto bg-white shadow rounded-lg p-4 mb-4">
         {messages.map((message, index) => (
           <div

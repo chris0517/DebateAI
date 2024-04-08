@@ -8,35 +8,36 @@ import SignUp from '../SignUp';
 import Chat from '../Chat';
 import Profile from '../Profile';
 
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import Firebase, {FirebaseContext} from '../Firebase'
-import { AuthProvider } from '../Firebase/authContext';
-
+import {GoogleOAuthProvider} from '@react-oauth/google';
+import Firebase, {FirebaseContext} from '../Firebase';
+import {AuthProvider} from '../Firebase/authContext';
+import History from '../History';
+import DebateHistory from '../../DebateHistory';
 
 const App = () => {
   return (
     <AuthProvider>
       <FirebaseContext.Provider value={Firebase}>
-      <div>
-        <Grid>
-          <Box sx={{width: '100%', height: '100vh'}}>
-            <Router>
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/login" element={<LogIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/classroom" element={<Classroom />} />
-                <Route path="/chat/:topic" element={<Chat />} />
-                <Route path="/profile" element={<Profile />} />
-
-              </Routes>
-            </Router>
-          </Box>
-        </Grid>
-      </div>
+        <div>
+          <Grid>
+            <Box sx={{width: '100%', height: '100vh'}}>
+              <Router>
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/login" element={<LogIn />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/classroom" element={<Classroom />} />
+                  <Route path="/chat/:topic" element={<Chat />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/history" element={<History />} />
+                  <Route path="/debate/:debateID" element={<DebateHistory />} />
+                </Routes>
+              </Router>
+            </Box>
+          </Grid>
+        </div>
       </FirebaseContext.Provider>
     </AuthProvider>
-
   );
 };
 export default App;

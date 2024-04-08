@@ -40,8 +40,6 @@ const DebateTopics = () => {
 
   const callApiLoadTitles = async () => {
     const url = serverURL + '/api/getTopics';
-    console.log(url);
-
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -53,7 +51,6 @@ const DebateTopics = () => {
     console.log('User settings: ', body);
     return body;
   };
-  console.log('topics: ', topics);
   const navigate = useNavigate();
   return (
     <div
@@ -76,7 +73,11 @@ const DebateTopics = () => {
             >
               <Card
                 className="flex flex-col justify-between w-full max-w-sm mx-auto bg-white rounded-lg shadow-md"
-                onClick={() => navigate(`/chat/${topic.topic_prompt}`)}
+                onClick={() =>
+                  navigate(`/chat/${topic.topic_prompt}`, {
+                    state: {topic: topic},
+                  })
+                }
               >
                 <CardActionArea className="flex flex-col h-full">
                   <CardMedia
