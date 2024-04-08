@@ -132,6 +132,8 @@ const LogIn = () => {
                 justifyContent="center"
                 alignItems="center" >
               <Typography style = {{margin: '10px'}} className="user-name">Email Authenticated: {email}</Typography>
+              <Typography style = {{margin: '10px'}} >Constinue Log In?</Typography>
+
               <form onSubmit={handleLogin}  style={{ margin: '10px', width: '60%' }}>
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
                   Sign In
