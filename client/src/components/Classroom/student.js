@@ -12,7 +12,7 @@ const StudentContent = ({ name, assignment, studentID, setStudentID, classroomID
   const user = useSelector(selectUserData);
   const [student, setStudent] = useState({});
   const [check, setCheck] = useState(false);
-  const [complete, setcomplete] = useState(true);
+  const [complete, setcomplete] = useState(false);
 
   const handleSwitchChange = () => {
     setcomplete(!complete);
