@@ -83,12 +83,13 @@ const SignUp = () => { // Destructure firebase from props
           body: JSON.stringify(requestBody)
         });
 
-        const body = await response.json();
-        console.log("body", body);
 
         if (response.status !== 200) {
           throw Error(body.error); // Throw the error received from the API
         }
+        
+        const body = await response.json();
+        console.log("body", body);
         return body;
       } catch (error) {
         // Check if the error message indicates a duplicate entry error
@@ -107,62 +108,59 @@ const SignUp = () => { // Destructure firebase from props
         <Box sx={{ marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography variant='h4' >  Sign up</Typography>
 
+          {success ? (
+            <>
+            <Typography style = {{margin: '10px'}} className="user-name">Email Authenticated: {userData.email}</Typography>
+            <form onSubmit={handleSubmit}  style={{ marginTop: '10px', width: '60%' }}>
+            <Select
+             fullWidth
+             value={role}
+             onChange={handleChange}
+             displayEmpty
+             variant="outlined"
+             name="role"
+             id="role"
+           >
+             <MenuItem value="" disabled>
+               Select Role
+             </MenuItem>
+             <MenuItem value="Student">Student</MenuItem>
+             <MenuItem value="Teacher">Teacher</MenuItem>
+           </Select>
+           {role === 'Student' && (
+             <>
+             <TextField
+               margin="normal"
+               fullWidth
+               id="studentNumber"
+               label="Student Number"
+               name="studentNumber"
+               onChange={handleStudnetNumberChange}
+               variant="outlined"
+             />
+             <TextField
+               margin="normal"
+               fullWidth
+               id="classRoom"
+               label="Classroom Number"
+               name="classRoom Number"
+               onChange={handleClassChange}
+               variant="outlined"
+             />
+             </>
+           )}
+           {role != "" && (
+             <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
+               Sign Up
+             </Button>
+             )
+           } 
+         </form>
+         </>  
+        ) : (
           <Button variant="contained" style={{ margin: '10px' }} onClick={handleGoogleLogin}>Sign Up With Google</Button>
-          {success && (
-              <Typography style = {{margin: '10px'}} className="user-name">Email Authenticated: {userData.email}</Typography>
-            )}
-          <form onSubmit={handleSubmit}  style={{ marginTop: '10px', width: '60%' }}>
-             <Select
-              fullWidth
-              value={role}
-              onChange={handleChange}
-              displayEmpty
-              variant="outlined"
-              name="role"
-              id="role"
-            >
-              <MenuItem value="" disabled>
-                Select Role
-              </MenuItem>
-              <MenuItem value="Student">Student</MenuItem>
-              <MenuItem value="Teacher">Teacher</MenuItem>
-            </Select>
-            {role === 'Student' && (
-              <>
-              <TextField
-                margin="normal"
-                fullWidth
-                id="studentNumber"
-                label="Student Number"
-                name="studentNumber"
-                onChange={handleStudnetNumberChange}
-                variant="outlined"
-              />
-              <TextField
-                margin="normal"
-                fullWidth
-                id="classRoom"
-                label="Classroom Number"
-                name="classRoom Number"
-                onChange={handleClassChange}
-                variant="outlined"
-              />
-              </>
-            )}
-            {role != "" && (
-              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
-                Sign Up
-              </Button>
-              )
-            }
- 
-            
-          </form>
-          
-          
-
-        
-        </Box>
+        )}
+       </Box>
       </Container>
     </div>
   );
