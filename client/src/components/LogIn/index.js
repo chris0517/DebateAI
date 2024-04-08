@@ -60,11 +60,11 @@ const LogIn = () => {
       let idToken = '';
       const userIDToken = await Firebase.doGetIdToken();
 
-      localStorage.setItem('currentUserID', userIDToken);
+      localStorage.setItem('userToken', userIDToken);
 
       console.log(
         'Currently stored in localstorage',
-        localStorage.getItem('currentUserID'),
+        localStorage.getItem('userToken'),
       );
 
       setEmail(user.email);
@@ -80,7 +80,7 @@ const LogIn = () => {
   const handleLogin = event => {
     event.preventDefault(); // Prevent default form submission behavior
     console.log(email);
-    console.log(localStorage.getItem('currentUserID'));
+    console.log(localStorage.getItem('userToken'));
     loadUser(); // Wait for loadUser() to finish before proceeding
   };
 
