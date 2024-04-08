@@ -1,4 +1,4 @@
-## Wensday Mar 27th, 2024
+## Wednesday Mar 27th, 2024
 
 ### Chris:
 
