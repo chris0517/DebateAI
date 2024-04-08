@@ -1,4 +1,4 @@
-## Monday Apr 1st, 2024
+## Wednesday Apr 3rd, 2024
 
 ### Chris:
 
