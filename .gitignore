@@ -2,6 +2,7 @@ node_modules/
 client/node_modules/
 client/build/
 serviceAccount.json
+serviceAccountKey.json
 .env
 package-lock.json
 client/package-lock.json
