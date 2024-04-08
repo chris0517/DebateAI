@@ -2,6 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import mysql from 'mysql';
 import router from '../../../api/login.js';
+import config from '../../../config.js'; // Update the path to your config file
 
 jest.mock('mysql');
 
@@ -9,10 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(router);
 
-describe('/retrieveUser endpoint', () => {
-  it('should retrieve a user with a given email and role', async () => {
+describe('/login endpoint', () => {
+  it('should retrieve a user with a given email', async () => {
     const mockResults = [
-      {id: 1, name: 'Jane Doe', email: 'jane.doe@example.com', role: 'student'},
+      { id: 1, name: 'Jane Doe', email: 'jane.doe@example.com', role: 'student' },
     ];
 
     const mockQuery = jest
@@ -29,17 +30,15 @@ describe('/retrieveUser endpoint', () => {
       role: 'student',
     };
 
-    const response = await request(app).post('/retrieveUser').send(requestBody);
+    const response = await request(app).post('/login').send(requestBody);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({express: JSON.stringify(mockResults)});
+    expect(response.body).toEqual({ express: JSON.stringify(mockResults) });
 
-    const expectedSql = expect.stringContaining(
-      'SELECT * From Student Where Email = ?',
-    );
+    const expectedSql = expect.stringContaining('SELECT * From User Where Email = ?');
     expect(mockQuery).toHaveBeenCalledWith(
       expectedSql,
-      expect.any(Array),
+      [requestBody.email],
       expect.any(Function),
     );
   });
