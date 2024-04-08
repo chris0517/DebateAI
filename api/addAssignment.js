@@ -7,14 +7,11 @@ const router = express.Router();
 
 router.post("/addAssignment", (req, res) => {
     const {assignment, classCode } = req.body;
-    console.log("api:", classCode)
     // Create a MySQL connection
     const connection = mysql.createConnection(config);
   
     // Insert into Classroom
-    const insertsql = `UPDATE Classroom
-                        SET Description = ?
-                        WHERE ClassroomID = ?;`;
+    const insertsql = `UPDATE Classroom SET Description = ? WHERE ClassroomID = ?;`;
     const insertdata = [assignment, classCode];
   
     connection.query(insertsql, insertdata, (error, insertResults, fields) => {

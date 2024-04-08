@@ -8,12 +8,8 @@ router.post("/studentList", (req, res) => {
     let connection = mysql.createConnection(config);
 
     const { classCode } = req.body;
-    let sql = `SELECT User.* FROM User 
-        INNER JOIN Classroom ON User.classroomID = Classroom.classroomID 
-        WHERE Classroom.classroomID = ?
-        AND User.Role = 'Student'`;
+    let sql = `SELECT User.* FROM User INNER JOIN Classroom ON User.classroomID = Classroom.classroomID WHERE Classroom.classroomID = ? AND User.Role = 'Student'`;
     let data = [classCode];
-    console.log(data)
 
     connection.query(sql, data, (error, results, fields) => {
         if (error) {

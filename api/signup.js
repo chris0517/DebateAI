@@ -8,7 +8,6 @@ router.post("/addUser", (req, res) => {
   let connection = mysql.createConnection(config);
 
   const { name, email, studentNum, role, classCode } = req.body;
-  console.log(req.body);
   let sql = ``;
   let data = [];
   if(role === "Student"){
@@ -28,7 +27,6 @@ router.post("/addUser", (req, res) => {
       console.error("Error adding user:", error.message);
       return res.status(500).json({ error: "Error adding user: " + error.message });
     }
-    console.log(error);
     let string = JSON.stringify(results);
     return res.status(200).json({  express: string });
   });

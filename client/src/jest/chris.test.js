@@ -30,9 +30,11 @@ describe('/addUser endpoint', () => {
     const response = await request(app).post('/addUser').send(requestBody);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({success: true});
+    expect(response.body).toEqual({
+      express: JSON.stringify({ affectedRows: 1 }),
+    });
     expect(mockQuery).toHaveBeenCalledWith(
-      expect.stringContaining('INSERT INTO Student'),
+      expect.stringContaining('INSERT INTO User'),
       expect.any(Array),
       expect.any(Function),
     );

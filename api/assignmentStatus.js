@@ -11,9 +11,7 @@ router.post("/updateAssignment", (req, res) => {
     const connection = mysql.createConnection(config);
   
     // Insert into Classroom
-    const insertsql = `UPDATE User
-                        SET Assignment = ?
-                        WHERE Email = ?`;
+    const insertsql = `UPDATE User SET Assignment = ? WHERE Email = ?`;
     const insertdata = [assignmentStatus, email];
   
     connection.query(insertsql, insertdata, (error, insertResults, fields) => {
