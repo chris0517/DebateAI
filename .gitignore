@@ -1,8 +1,8 @@
 node_modules/
 client/node_modules/
 client/build/
-serviceAccountKey.json
+serviceAccount.json
 .env
 package-lock.json
 client/package-lock.json
-
+cypress.env.json

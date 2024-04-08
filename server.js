@@ -21,7 +21,7 @@ import admin from "firebase-admin";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import serviceAccount from "./serviceAccountKey.json" assert { type: "json" };
+import serviceAccount from "./serviceAccount.json" assert { type: "json" };
 import { checkAuth } from "./middleware.js";
 
 admin.initializeApp({

@@ -79,6 +79,7 @@ export default function NavBar() {
 
           <Button color="inherit">
             <Link
+              id="topics-link"
               color="inherit"
               style={{
                 textDecoration: 'inherit',
@@ -95,6 +96,7 @@ export default function NavBar() {
 
           <Button color="inherit">
             <Link
+              id="history-link"
               color="inherit"
               style={{
                 textDecoration: 'inherit',

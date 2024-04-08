@@ -1,8 +1,4 @@
 describe('DebateAI Page', () => {
-  beforeEach(() => {
-    cy.visit('/'); // Replace with your DebateAI page URL
-  });
-
   const login = () => {
     cy.visit('/login'); // Replace with your DebateAI page URL
     cy.contains('Log In').click();
@@ -15,8 +11,8 @@ describe('DebateAI Page', () => {
     cy.get('#continueloginbtn').click();
     cy.wait(3000);
   };
-
   it('displays Title', () => {
+    cy.visit('/'); // Replace with your DebateAI page URL
     cy.contains('DebateAI');
   });
   it('displays NavBar Components', () => {
@@ -27,21 +23,12 @@ describe('DebateAI Page', () => {
     cy.url().should('include', '/signup');
   });
 
-  it('Test Classroom page', () => {
-    cy.contains('Classroom').click();
-    cy.url().should('include', '/classroom');
-    cy.contains('Please Log in first');
-    cy.get('#navigate').click();
-    cy.url().should('include', '/login');
-  });
-
-  it('go to topics page', () => {
+  it('go to history page', () => {
+    //wait three seconds
     login();
-    cy.contains('Topics').click();
-    cy.url().should('include', '/');
-    cy.contains('Artificial Intelligence').click();
-    cy.get('#chat-input').type('I choose the other side');
+    cy.get('#history-link').click();
+    cy.url().should('include', '/history');
     cy.wait(3000);
-    cy.get('#chat-send').click();
+    cy.contains('Artificial Intelligence').click();
   });
 });

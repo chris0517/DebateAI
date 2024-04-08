@@ -1,18 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import NavBar from '../Navigation';
-import { TextField, Button, Container, Typography, Box, createTheme, ThemeProvider, Select, MenuItem } from '@mui/material';
-import { withFirebase } from '../Firebase'; // Import Firebase context and HOC
-import Firebase from '../Firebase'
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Box,
+  createTheme,
+  ThemeProvider,
+  Select,
+  MenuItem,
+} from '@mui/material';
+import {withFirebase} from '../Firebase'; // Import Firebase context and HOC
+import Firebase from '../Firebase';
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+} from 'firebase/auth';
 const serverURL = '';
 
-const SignUp = () => { // Destructure firebase from props
-    const [userData, setUserData] = useState({});
-    const [role, setRole] = useState("");
-    const [studentNum, setStudentNum] = useState(null);
-    const [display, setDisplay] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [classCode, setClassCode] = useState(null);
+const SignUp = () => {
+  // Destructure firebase from props
+  const [userData, setUserData] = useState({});
+  const [role, setRole] = useState('');
+  const [studentNum, setStudentNum] = useState(null);
+  const [display, setDisplay] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [classCode, setClassCode] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleGoogleLogin = async () => {
     try {
@@ -20,8 +37,8 @@ const SignUp = () => { // Destructure firebase from props
       const result = await signInWithPopup(Firebase.auth, provider); // Sign in with Google popup      const user = result.user;
       //setUserData.name(result.user.name);
       //setUserData.email(result.user.email);
-      
-      setUserData({ name: result.user.displayName, email: result.user.email});
+
+      setUserData({name: result.user.displayName, email: result.user.email});
       setSuccess(true);
       console.log(result.user);
       console.log(userData.name);
@@ -30,137 +47,220 @@ const SignUp = () => { // Destructure firebase from props
     }
   };
 
-    const handleStudnetNumberChange = (e) => {
-      setStudentNum(e.target.value);
+  const handleRegularSignUp = async e => {
+    e.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        Firebase.auth,
+        email,
+        password,
+      );
+      setUserData({
+        name: userCredential.user.displayName,
+        email: userCredential.user.email,
+      });
+      setSuccess(true);
+      // You may want to handle additional user info here
+      console.log(userCredential.user);
+    } catch (error) {
+      console.error('Regular sign up failed:', error);
+      alert(error.message);
+    }
+  };
+
+  const handleStudnetNumberChange = e => {
+    setStudentNum(e.target.value);
+  };
+  const handleClassChange = e => {
+    setClassCode(e.target.value);
+  };
+  const handleChange = e => {
+    setRole(e.target.value);
+  };
+  const handleEmailChange = e => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = e => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    setDisplay(true);
+    console.log('Submitting:', userData);
+
+    const userInfo = {
+      name: userData.name,
+      email: userData.email,
+      role: role,
+      studentNum: studentNum,
+      classCode: classCode,
     };
-    const handleClassChange = (e) => {
-      setClassCode(e.target.value);
-    };
-    const handleChange = (e) => {
-      setRole(e.target.value);
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      setDisplay(true);
-      console.log('Submitting:', userData);
-
-      const userInfo = {
-        name: userData.name,
-        email: userData.email,
-        role: role,
-        studentNum: studentNum,
-        classCode: classCode
-      };
-      console.log(userInfo)
-      callApiAddUser(userInfo)
-          .then(res => {
-            console.log('callApiAddUser response: ', res);
-            var parsed = JSON.parse(res.express);
-            console.log(parsed)
-            if(parsed.affectedRows === 0){
-              alert("Classroom code not found, please enter a valid classroom code!")
-            }else{
-              alert("Sign Up Successful!");
-            }
-          })
-          .catch(error => {
-            console.error('Error adding user:', error);
-          });
-    };
-
-    const callApiAddUser = async requestBody => {
-      const url = serverURL + '/api/addUser';
-      console.log('Sending user data to:', url);
-      console.log(requestBody)
-
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestBody)
-        });
-
-
-        if (response.status !== 200) {
-          throw Error(body.error); // Throw the error received from the API
+    console.log(userInfo);
+    callApiAddUser(userInfo)
+      .then(res => {
+        console.log('callApiAddUser response: ', res);
+        var parsed = JSON.parse(res.express);
+        console.log(parsed);
+        if (parsed.affectedRows === 0) {
+          alert(
+            'Classroom code not found, please enter a valid classroom code!',
+          );
+        } else {
+          alert('Sign Up Successful!');
         }
-        
-        const body = await response.json();
-        console.log("body", body);
-        return body;
-      } catch (error) {
-        // Check if the error message indicates a duplicate entry error
-        if (error.message) {
-          // Display error message on the webpage
-          alert("Error: This email is already registered.");
-          Firebase.doSignOut();
-        }
+      })
+      .catch(error => {
+        console.error('Error adding user:', error);
+      });
+  };
+
+  const callApiAddUser = async requestBody => {
+    const url = serverURL + '/api/addUser';
+    console.log('Sending user data to:', url);
+    console.log(requestBody);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.status !== 200) {
+        throw Error(body.error); // Throw the error received from the API
       }
 
-    };
+      const body = await response.json();
+      console.log('body', body);
+      return body;
+    } catch (error) {
+      // Check if the error message indicates a duplicate entry error
+      if (error.message) {
+        // Display error message on the webpage
+        alert('Error: This email is already registered.');
+        Firebase.doSignOut();
+      }
+    }
+  };
   return (
-    <div style = {{padding: '20px'}}>
+    <div style={{padding: '20px'}}>
       <NavBar />
-       <Container maxWidth="xs">
-        <Box sx={{ marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography variant='h4' >  Sign up</Typography>
+      <Container maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h4"> Sign up</Typography>
 
           {success ? (
             <>
-            <Typography style = {{margin: '10px'}} className="user-name">Email Authenticated: {userData.email}</Typography>
-            <form onSubmit={handleSubmit}  style={{ marginTop: '10px', width: '60%' }}>
-            <Select
-             fullWidth
-             value={role}
-             onChange={handleChange}
-             displayEmpty
-             variant="outlined"
-             name="role"
-             id="role"
-           >
-             <MenuItem value="" disabled>
-               Select Role
-             </MenuItem>
-             <MenuItem value="Student">Student</MenuItem>
-             <MenuItem value="Teacher">Teacher</MenuItem>
-           </Select>
-           {role === 'Student' && (
-             <>
-             <TextField
-               margin="normal"
-               fullWidth
-               id="studentNumber"
-               label="Student Number"
-               name="studentNumber"
-               onChange={handleStudnetNumberChange}
-               variant="outlined"
-             />
-             <TextField
-               margin="normal"
-               fullWidth
-               id="classRoom"
-               label="Classroom Number"
-               name="classRoom Number"
-               onChange={handleClassChange}
-               variant="outlined"
-             />
-             </>
-           )}
-           {role != "" && (
-             <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
-               Sign Up
-             </Button>
-             )
-           } 
-         </form>
-         </>  
-        ) : (
-          <Button variant="contained" style={{ margin: '10px' }} onClick={handleGoogleLogin}>Sign Up With Google</Button>
-        )}
-       </Box>
+              <Typography style={{margin: '10px'}} className="user-name">
+                Email Authenticated: {userData.email}
+              </Typography>
+              <form
+                onSubmit={handleSubmit}
+                style={{marginTop: '10px', width: '60%'}}
+              >
+                <Select
+                  fullWidth
+                  value={role}
+                  onChange={handleChange}
+                  displayEmpty
+                  variant="outlined"
+                  name="role"
+                  id="role"
+                >
+                  <MenuItem value="" disabled>
+                    Select Role
+                  </MenuItem>
+                  <MenuItem value="Student">Student</MenuItem>
+                  <MenuItem value="Teacher">Teacher</MenuItem>
+                </Select>
+                {role === 'Student' && (
+                  <>
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      id="studentNumber"
+                      label="Student Number"
+                      name="studentNumber"
+                      onChange={handleStudnetNumberChange}
+                      variant="outlined"
+                    />
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      id="classRoom"
+                      label="Classroom Number"
+                      name="classRoom Number"
+                      onChange={handleClassChange}
+                      variant="outlined"
+                    />
+                  </>
+                )}
+                {role != '' && (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    sx={{marginTop: 2}}
+                  >
+                    Sign Up
+                  </Button>
+                )}
+              </form>
+            </>
+          ) : (
+            <>
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Email"
+                name="email"
+                value={email}
+                onChange={handleEmailChange}
+                variant="outlined"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+                variant="outlined"
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{marginTop: 2}}
+                onClick={handleRegularSignUp}
+              >
+                Sign Up
+              </Button>
+              <Typography style={{margin: '10px'}}>OR</Typography>
+
+              <Button
+                variant="contained"
+                style={{margin: '10px'}}
+                onClick={handleGoogleLogin}
+              >
+                Sign Up With Google
+              </Button>
+            </>
+          )}
+        </Box>
       </Container>
     </div>
   );

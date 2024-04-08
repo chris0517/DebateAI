@@ -14,7 +14,11 @@ import {
 import NavBar from '../Navigation';
 import {withFirebase} from '../Firebase'; // Import Firebase context and HOC
 import Firebase from '../Firebase';
-import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import {useNavigate} from 'react-router-dom';
 
 import {AuthContext} from '../Firebase/authContext';
@@ -37,6 +41,7 @@ const LogIn = () => {
 
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); // Added for regular login
   const [errorMessage, setErrorMessage] = useState('');
   const [authenticated, setAuthenticated] = useState(false); // Track authentication status
 
@@ -76,6 +81,26 @@ const LogIn = () => {
       handleLoginFailure(error);
     }
   };
+
+  const handleRegularLogin = async event => {
+    event.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        Firebase.auth,
+        email,
+        password,
+      );
+      const userIDToken = await Firebase.doGetIdToken();
+      localStorage.setItem('userToken', userIDToken);
+      setEmail(userCredential.user.email);
+      handleLoginSuccess(userCredential);
+    } catch (error) {
+      handleLoginFailure(error);
+    }
+  };
+
+  const handleEmailChange = e => setEmail(e.target.value);
+  const handlePasswordChange = e => setPassword(e.target.value);
 
   const handleLogin = event => {
     event.preventDefault(); // Prevent default form submission behavior
@@ -143,17 +168,48 @@ const LogIn = () => {
           <Typography variant="h4">Log In</Typography>
 
           {!authenticated && (
-            <Button
-              style={{margin: '10px'}}
-              id="login"
-              variant="contained"
-              onClick={handleGoogleLogin}
-            >
-              Log In With Google
-            </Button>
+            <>
+              <TextField
+                id="email"
+                label="Email"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={email}
+                onChange={handleEmailChange}
+              />
+              <TextField
+                id="password"
+                label="Password"
+                variant="outlined"
+                type="password"
+                fullWidth
+                margin="normal"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <Button
+                id="loginbtn"
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{mt: 2}}
+                onClick={handleRegularLogin}
+              >
+                Log In
+              </Button>
+              <Typography style={{margin: '10px'}}>OR</Typography>
+              <Button
+                style={{margin: '10px'}}
+                variant="contained"
+                onClick={handleGoogleLogin}
+              >
+                Log In With Google
+              </Button>
+            </>
           )}
 
-          {(authenticated || email) && (
+          {authenticated && email && (
             <div>
               <Grid
                 container
@@ -173,6 +229,7 @@ const LogIn = () => {
                   style={{margin: '10px', width: '60%'}}
                 >
                   <Button
+                    id="continueloginbtn"
                     type="submit"
                     variant="contained"
                     color="primary"
