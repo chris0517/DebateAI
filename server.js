@@ -11,8 +11,9 @@ import LogIn from "./api/login.js";
 import Student from "./db/student.js";
 import Classroom from "./api/addClassroom.js"
 import StudentList from "./api/studentList.js"
-import classroomInfo from "./api/classroomInfo.js"
-
+import ClassroomInfo from "./api/classroomInfo.js"
+import Assignment from "./api/addAssignment.js"
+import Status from "./api/assignmentStatus.js"
 
 import admin from "firebase-admin";
 const __filename = fileURLToPath(import.meta.url);
@@ -45,8 +46,11 @@ app.use("/api", Classroom);
 //retrieve student list
 app.use("/api", StudentList)
 //add classroom to Student
-app.use("/api", classroomInfo)
-
+app.use("/api", ClassroomInfo)
+//add assignment
+app.use("/api", Assignment)
+//update assignment status
+app.use("/api", Status)
 
 
 app.use("/api", [checkAuth, OpenAI]);

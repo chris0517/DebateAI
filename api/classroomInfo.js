@@ -7,17 +7,17 @@ const router = express.Router();
 router.post("/classroomInfo", (req, res) => {
   let connection = mysql.createConnection(config);
 
-  const { classCode } = req.body;
+  const {classCode} = req.body;
   let sql = `SELECT * From Classroom Where ClassroomID = ?`;
   let data = [classCode];
-
+  console.log(classCode);
 
   connection.query(sql, data, (error, results, fields) => {
     if (error) {
       console.error("Error retrieving classroom:", error.message);
       return res.status(500).json({ error: "Error adding user: " + error.message });
     }
-
+    console.log(results)
     let string = JSON.stringify(results);
     res.send({ express: string });
   });
