@@ -10,6 +10,7 @@ router.post("/addUser", (req, res) => {
   const { name, email, studentNum, role, classCode } = req.body;
   let sql = ``;
   let data = [];
+
   if(role === "Student"){
     sql = `INSERT INTO User (Name, Email, ClassroomID, Role, StudentNumber)
     SELECT ?, ?, ?, ?, ?
@@ -19,7 +20,7 @@ router.post("/addUser", (req, res) => {
   }else{
     sql = `INSERT INTO User (Name, Email, Role)
     SELECT ?, ?, ?;`;
-    data = [name, email,classCode, role, studentNum, classCode];
+    data = [name, email, role];
   }
 
   connection.query(sql, data, (error, results, fields) => {
