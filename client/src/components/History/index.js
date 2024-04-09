@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {selectUserData} from '../../redux/reducers/userSlice';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -12,8 +12,10 @@ import NavBar from '../Navigation';
 const History = () => {
   const user = useSelector(selectUserData);
   const [debates, setDebates] = useState([]);
+  const [studentNumber, setStudentNum] = useState('');
   const serverURL = ''; // Your server URL here
   const navigate = useNavigate();
+  const location = useLocation();
 
   const formattedDateTime = date => {
     console.log(date);
@@ -29,7 +31,13 @@ const History = () => {
   };
 
   const getPrevDebates = async () => {
-    const queryParams = new URLSearchParams({userID: user.id}).toString();
+    let userId = user.id;
+    console.log(location.state);
+    if (location.state?.student) {
+      userId = location.state.student;
+      setStudentNum(location.state.studentNum);
+    }
+    const queryParams = new URLSearchParams({userID: userId}).toString();
     const url = `${serverURL}/api/getDebates?${queryParams}`;
     let token = localStorage.getItem('userToken');
 
@@ -73,8 +81,11 @@ const History = () => {
           textAlign: 'center',
         }}
       >
-        Previous Debates
+        {studentNumber
+          ? `Previous Debates for Student: ` + studentNumber
+          : `Previous Debates`}
       </Typography>
+
       <Grid container spacing={3}>
         {debates.map(debate => (
           <Grid item key={debate.id} xs={12} sm={6} md={4}>
