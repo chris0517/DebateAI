@@ -1,6 +1,25 @@
 import React, { useState, useContext, useEffect} from 'react';
-import { Switch, Divider, Grid, Typography, TextField, Button, List, ListItem, ListItemText } from '@mui/material';
-import { CheckCircleOutlineOutlined, RadioButtonUncheckedOutlined } from '@mui/icons-material';
+import {
+  Divider,
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Box,
+  ListItemIcon,
+  Switch
+} from '@mui/material';
+import {
+  CheckCircleOutlineOutlined,
+  RadioButtonUncheckedOutlined,
+  PersonOutlined,
+  AssignmentOutlined,
+} from '@mui/icons-material';
+import NumbersIcon from '@mui/icons-material/Numbers';
 
 import { useSelector } from 'react-redux';
 import { selectUserData } from '../../redux/reducers/userSlice';
@@ -105,7 +124,7 @@ const StudentContent = ({ name, assignment, studentID, setStudentID, classroomID
         
         <Grid container spacing={2} justifyContent="center">
             <Grid container spacing={2} item xs={12}>
-                <Grid item xs={6} style={{marginTop:'20px'}}>
+                <Grid item xs={6}>
                   <Typography variant="h2" >{name}</Typography>
                   <Typography variant="body1">Classroom ID: {user.classroomID}</Typography>
                   <Divider style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}/>
@@ -119,23 +138,30 @@ const StudentContent = ({ name, assignment, studentID, setStudentID, classroomID
           Student List:
         </Typography>
         <div>
-          <List style={{ paddingLeft: 0 }}>
-            {check &&
-              student.map((student, index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={
-                      <>
-                        <div>Name: {student.Name}</div>
-                        <ul style={{ marginLeft: 20, listStyleType: 'disc', paddingLeft: 0 }}>
-                          <li>Student Number: {student.StudentNumber}</li>
-                        </ul>
-                      </>
-                    }
-                  />
-                </ListItem>
-              ))}
-          </List>
+        <List>
+                {check &&
+                  student.map((student, index) => (
+                    <div>
+                    <ListItem key={index}>
+                      <ListItemIcon>
+                        <PersonOutlined />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <span style={{ color: 'black', marginRight: '8px' }}>{student.Name}</span>
+                          </div>
+                        }
+                      />
+
+                    </ListItem>
+                    <ListItem style={{ marginLeft: '20px', marginTop: '-20px', marginBottom: '5px' }}>
+                        <NumbersIcon color="action" style={{ marginRight: '10'}}/>
+                      <ListItemText primary={`Student Number: ${student.StudentNumber}`} />
+                    </ListItem>
+                    </div>
+                  ))}
+              </List>
         </div>
       </Grid>
 
@@ -144,10 +170,11 @@ const StudentContent = ({ name, assignment, studentID, setStudentID, classroomID
           Assignments:
         </Typography>
         <div>
-          <ul style={{ marginLeft: 20, listStyleType: 'disc', paddingLeft: 0 }}>
-            <li style={{ marginLeft: '20px', fontSize:'20px'}}>{assignment}            
-            </li>
-          </ul>
+        {assignment != null && (
+          <Box mt={2} p={2} component={Paper} elevation={3}>
+            {assignment}
+          </Box>
+        )}
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 10 }}>
             <Switch checked={complete} onChange={handleSwitchChange} color="primary" />
             {complete ? (

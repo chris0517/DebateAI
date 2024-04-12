@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
-import { Button, TextField, Container, Grid, Box } from '@mui/material';
+import { Button, TextField, Container, Grid, Box, Paper } from '@mui/material'; 
 import { v4 as uuidv4 } from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import TeacherContent from './teacher';
@@ -116,6 +116,7 @@ const Classroom = () => {
           handleCreateClassroom={handleCreateClassroom}
           setClassroomName={setClassroomName}
           handleNameChange={handleNameChange}
+          loadClassroom={loadClassroom}
         />
         </>
       );
@@ -141,12 +142,11 @@ const Classroom = () => {
     }
   };
   
-  // Render the content based on user's roles
   return (
     <div style={{ padding: '20px' }}>
       <NavBar />
       <Container maxWidth="lg">
-        <Box >
+        <Box component={Paper} elevation={1} p={2} marginTop={3}>
           {renderContentBasedOnRoles()}
         </Box>
       </Container>
