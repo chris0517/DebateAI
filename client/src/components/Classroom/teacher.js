@@ -8,14 +8,19 @@ import {
   List,
   ListItem,
   ListItemText,
+  Paper,
+  Box,
+  ListItemIcon,
 } from '@mui/material';
-import {v4 as uuidv4} from 'uuid';
 import {useSelector} from 'react-redux';
 import {selectUserData} from '../../redux/reducers/userSlice';
 import {
   CheckCircleOutlineOutlined,
   RadioButtonUncheckedOutlined,
+  PersonOutlined,
+  AssignmentOutlined,
 } from '@mui/icons-material';
+import NumbersIcon from '@mui/icons-material/Numbers';
 import {useNavigate} from 'react-router-dom';
 
 const serverURL = '';
@@ -29,6 +34,7 @@ const TeacherContent = ({
   classroomName,
   setClassroomName,
   handleNameChange,
+  loadClassroom,
 }) => {
   const user = useSelector(selectUserData);
   const [student, setStudent] = useState({});
@@ -43,6 +49,11 @@ const TeacherContent = ({
     loadList();
   }, []);
 
+
+  useEffect(() => {
+    loadClassroom()
+  }, [])
+
   const loadList = () => {
     callstudentList().then(res => {
       console.log('callretrieveUser returned: ', res);
@@ -53,6 +64,7 @@ const TeacherContent = ({
       setCheck(true);
     });
   };
+  
   const callstudentList = async () => {
     const url = serverURL + '/api/studentList';
     console.log(url);
@@ -83,6 +95,7 @@ const TeacherContent = ({
     };
     callApiAddAssignment(sentInfo);
     setAssignmentText('');
+    loadClassroom();
   };
 
   const callApiAddAssignment = async requestBody => {
@@ -114,7 +127,7 @@ const TeacherContent = ({
         <>
           <Grid container spacing={2} justifyContent="center">
             <Grid container spacing={2} item xs={12}>
-              <Grid item xs={6} style={{marginTop: '20px'}}>
+              <Grid item xs={6}>
                 <Typography variant="h2">{name}</Typography>
                 <Typography variant="body1">
                   Classroom ID: {user.classroomID}
@@ -124,27 +137,29 @@ const TeacherContent = ({
             </Grid>
 
             <Grid container spacing={2} item xs={12} style={{margin: '5px'}}>
-              <Grid item xs={6}>
-                <Typography variant="h6">Student List:</Typography>
-                <div>
-                  <List>
-                    {check &&
-                      student.map((student, index) => (
-                        <ListItem key={index}>
-                          <ListItemText
-                            primary={
-                              <>
-                                <div>Name: {student.Name}</div>
-                                <ul
-                                  style={{
-                                    marginLeft: 20,
-                                    listStyleType: 'disc',
-                                  }}
-                                >
-                                  <li>
-                                    Student Number: {student.StudentNumber}
-                                  </li>
-                                  <Button
+            <Grid item xs={6}>
+              <Typography variant="h6">Student List:</Typography>
+
+
+              <List>
+                {check &&
+                  student.map((student, index) => (
+                    <div>
+                    <ListItem key={index}>
+                      <ListItemIcon>
+                        <PersonOutlined />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <span style={{ color: 'black', marginRight: '8px' }}>{student.Name}</span>
+                            {student.Assignment === 1 ? (
+                              <CheckCircleOutlineOutlined style={{ color: 'green' }} />
+                            ) : (
+                              <RadioButtonUncheckedOutlined style={{ color: 'red' }} />
+                            )}
+                             <div>
+                                <Button
                                     onClick={() =>
                                       navigate(`/history`, {
                                         state: {
@@ -156,39 +171,21 @@ const TeacherContent = ({
                                   >
                                     View Debate History
                                   </Button>
-                                </ul>
-                                <ul
-                                  style={{
-                                    marginLeft: 20,
-                                    listStyleType: 'disc',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                  }}
-                                >
-                                  {student.Assignment === 1 ? (
-                                    <>
-                                      <li>Assignment: Completed</li>
-                                      <CheckCircleOutlineOutlined
-                                        style={{marginLeft: 10, color: 'green'}}
-                                      />
-                                    </>
-                                  ) : (
-                                    <>
-                                      <li>Assignment: Incomplete</li>
-                                      <RadioButtonUncheckedOutlined
-                                        style={{marginLeft: 10, color: 'red'}}
-                                      />
-                                    </>
-                                  )}
-                                </ul>
-                              </>
-                            }
-                          />
-                        </ListItem>
-                      ))}
-                  </List>
-                </div>
-              </Grid>
+                                </div>
+                          </div>
+                        }
+                      />
+
+                    </ListItem>
+                    <ListItem style={{ marginLeft: '20px', marginTop: '-20px', marginBottom: '5px' }}>
+                        <NumbersIcon color="action" style={{ marginRight: '10'}}/>
+                      <ListItemText primary={`Student Number: ${student.StudentNumber}`} />
+                    </ListItem>
+                    </div>
+                  ))}
+              </List>
+
+            </Grid>
               <Grid item xs={6}>
                 <TextField
                   label="Enter assignment"
@@ -206,20 +203,23 @@ const TeacherContent = ({
                   Assign Assignment
                 </Button>
                 <div>
-                  <Typography variant="h6" style={{marginTop: '10px'}}>
-                    Current Assignments:
-                  </Typography>
-                  <ul
-                    style={{
-                      marginLeft: 20,
-                      listStyleType: 'disc',
-                      paddingLeft: 0,
-                    }}
-                  >
-                    <li style={{marginLeft: '20px', marginTop: '10px'}}>
+                  {assignment ? (
+                    <div>
+                    <Typography variant="h6" style={{marginTop: '10px'}}>
+                      Current Assignment:
+                    </Typography>
+                    <Box mt={2} p={2} component={Paper} elevation={3}>
                       {assignment}
-                    </li>
-                  </ul>
+                    </Box>
+                    </div>
+                  ): (
+                  <>
+                    <Box mt={2} p={2} component={Paper} elevation={3}>
+                      <Typography>No Assignments</Typography>
+                    </Box>
+                  </>
+                  )}
+
                 </div>
               </Grid>
             </Grid>
