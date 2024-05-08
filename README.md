@@ -30,9 +30,8 @@ yarn dev
 ```
 ec2-3-137-65-169.us-east-2.compute.amazonaws.com
 ```
-
 The database name is the same as your UW username.
-The password is "MSCI342".
+
 
 ## Development Tips:
 
@@ -59,7 +58,7 @@ For this project, you will be required to develop a full-stack React/NodeJS appl
 ec2-3-137-65-169.us-east-2.compute.amazonaws.com
 ```
 
-with your UW username and password 'MSCI342'.
+with your UW username
 
 2. Once you are connected, open a Query window and select your database:
 
