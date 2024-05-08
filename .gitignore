@@ -7,3 +7,4 @@ serviceAccountKey.json
 package-lock.json
 client/package-lock.json
 cypress.env.json
+config.js
