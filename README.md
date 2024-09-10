@@ -23,14 +23,15 @@ DebateAI is an ed-tech platform that allows students to pick topics to debate on
 ```
 yarn dev
 ```
-
+<!-- 
 - make sure you modify `config.js` to point to your MySQL database. The MySQL server name is
+
 
 ```
 ec2-3-137-65-169.us-east-2.compute.amazonaws.com
 ```
 The database name is the same as your UW username.
-
+-->
 
 ## Development Tips:
 
@@ -52,12 +53,13 @@ git push origin your-branch-name
 For this project, you will be required to develop a full-stack React/NodeJS application with a MySQL database. To develop the MySQL database, follow the same process as in MSci 245:
 
 1. Open MySQL Workbench on your local machine and connect to
-
+<!-- 
 ```
 ec2-3-137-65-169.us-east-2.compute.amazonaws.com
 ```
+-->
 
-with your UW username
+with your username
 
 2. Once you are connected, open a Query window and select your database:
 
