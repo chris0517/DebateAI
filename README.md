@@ -15,7 +15,6 @@ DebateAI is an ed-tech platform that allows students to pick topics to debate on
 
 
 
-## This repo contains a template project for starting your development. It is based on the sample assignment solution from MSci 245.
 
 ## To run this app:
 
