@@ -1,6 +1,6 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=13372103)
 
-# MSci 342 - DebateAI
+# DebateAI
 
 ## Overview
 DebateAI is an ed-tech platform that allows students to pick topics to debate on, pick a side to be on, and have a well-structured debate with the AI. In the debate, the AI will look for claims that rebut their position, specific evidence, and analysis/reasoning to proceed.  After the debate, the AI provides feedback to the student, one or two things they did the best, and a suggestion for improvement. 
