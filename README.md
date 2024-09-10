@@ -50,7 +50,7 @@ git commit -m "done feature xyz"
 git push origin your-branch-name
 ```
 
-For this project, you will be required to develop a full-stack React/NodeJS application with a MySQL database. To develop the MySQL database, follow the same process as in MSci 245:
+For this project, you will be required to develop a full-stack React/NodeJS application with a MySQL database. To develop the MySQL database:
 
 1. Open MySQL Workbench on your local machine and connect to
 <!-- 
